@@ -8,6 +8,7 @@ async function main(req,res,youtubeLink) {
     // show browser with: headless:false
     const browser = await puppeteer.launch({
       // headless: false,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
       // slowMo: 250 // slow down by 250ms
     });
 
