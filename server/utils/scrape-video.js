@@ -124,15 +124,15 @@ async function main(req,res,youtubeLink) {
     // muteBtn.click()
 
     // The Scroll function that we will be using in our application, so that stuff will load as we are scrolling - may need to be updated
-    async function scrollFunc() {
-      await page.evaluate(async () => {
-        await new Promise((resolve, reject) => {
+    async function scrollFunc(int) {
+      await page.evaluate(async (int) => {
+        await new Promise((resolve, reject,) => {
           try {
             const maxScroll = Number.MAX_SAFE_INTEGER;
             let lastScroll = 0;
 
             const interval = setInterval(() => {
-              window.scrollBy(0, 1000); //scroll amount
+              window.scrollBy(0, int); //scroll amount
               const scrollTop = document.documentElement.scrollTop;
               if (scrollTop === maxScroll || scrollTop === lastScroll) {
                 clearInterval(interval);
@@ -147,14 +147,20 @@ async function main(req,res,youtubeLink) {
             reject(err.toString());
           }
         });
-      });
+      },int);
     }
 
-    // Scroll all the way down
+    /* Problem: if we scroll too much, too fast, to the bottom of the page: 
+        comments don't get rendered out
+      When we render out the page, scroll slightly and wait for comments to be loaded
+    */
+    await scrollFunc(200)
+    await page.waitForSelector('yt-formatted-string.count-text')
 
     // Fix the "Stopping on scroll" problem
     await page.waitForSelector('yt-next-continuation.ytd-item-section-renderer')
 
+    // Scroll all the way down
     console.log('scrolling...')
 
     let active = true
@@ -164,7 +170,7 @@ async function main(req,res,youtubeLink) {
       const commentsStr = 'ytd-comment-renderer.ytd-comment-thread-renderer div#body div#main ytd-expander#expander div#content yt-formatted-string#content-text'
       let preCommentHanlder = await page.$$(commentsStr)
 
-      await scrollFunc()
+      await scrollFunc(1000)
 
       // below will gather a new $('context') at each iteration, and test to see if visible or not
       let buffer = await page.$('yt-next-continuation.ytd-item-section-renderer')
