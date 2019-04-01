@@ -8,7 +8,7 @@ async function main(req,res,youtubeLink) {
     // Launch the Chromium browser - have a browser object
     // show browser with: headless:false
     const browser = await puppeteer.launch({
-      headless: false,
+      // headless: false,
       args: ['--no-sandbox', '--disable-setuid-sandbox']
       // slowMo: 250 // slow down by 250ms
     });
