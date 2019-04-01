@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
   // page stays responsive for longer than 2 minutes
-  req.connection.setTimeout(Number.MAX_SAFE_INTEGER);
+  // req.connection.setTimeout(30 * 1000);
   (async function oneVideo(req,res) {
     const youtubeLink = req.body.youtubeLink
     const data = await youtubeScraper.oneVideo(req,res,youtubeLink)
