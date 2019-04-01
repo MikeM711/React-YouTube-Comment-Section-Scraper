@@ -99,6 +99,20 @@ async function main(req,res,youtubeLink) {
     await page.waitFor(100) // time to breathe
 
     await console.log('video is in view!')
+
+    // function write() {
+    //   return new Promise(function (resolve) {
+    //     res.write({data: 'hello router, video is in view'})
+    //     resolve()
+    //   });
+    // }
+
+    // await write()
+
+    await res.write('my response')
+
+    // USE res.write I think
+    await res.write('video is in view')
     // res.send({data: 'hello router, video is in view'})
     
     // yt-visibility-monitor id="visibility-monitor"
@@ -175,13 +189,16 @@ async function main(req,res,youtubeLink) {
       // below will gather a new $('context') at each iteration, and test to see if visible or not
       let buffer = await page.$('yt-next-continuation.ytd-item-section-renderer')
       await page.waitFor(100) // time to breathe
+
       // res.send({data: 'scrolling'})
+      await res.write('scrolling')
 
       let afterCommentHanlder = await page.$$(commentsStr)
 
       if(preCommentHanlder.length < afterCommentHanlder.length){
         i++
         console.log('more comments loaded!',i)
+        await res.write('more comments loaded')
       }
 
       if (!buffer) {
@@ -258,6 +275,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
         await console.log(`${i + 1} " out of " ${expander.length} "comments"`)
 
         // res.send({data: 'expanded comment'})
+        await res.write('expanded comment')
       }
     }
 
@@ -317,7 +335,9 @@ If: ('paper-dialog.ytd-popup-container') shows up,
         // Check if there is another level-deep of "Show more replies"
         showMoreRep = await page.$$('yt-formatted-string.yt-next-continuation')
         console.log(`${showMoreRep.length} "show more replies" buttons visible`)
+
         // res.send({data: 'expanded "show more replies"'})
+        await res.write('show more replies')
 
       } else {
         active = false
@@ -532,6 +552,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
 
       } else {
         // res.send({data: 'finding replies'})
+        await res.write('finding replies')
 
         console.log('No replies found for', (i+1))
         var replies = false
@@ -550,6 +571,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
       }
 
       // res.send({data: 'collecting comment data'})
+      await res.write('collecting comment data')
       CommentSection.push(thread)
 
     }

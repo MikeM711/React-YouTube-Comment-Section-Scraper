@@ -10,9 +10,14 @@ router.post('/', (req, res) => {
     const youtubeLink = req.body.youtubeLink
     const data = await youtubeScraper.oneVideo(req,res,youtubeLink)
     console.log(data)
-    res.render('home', {
-      retrievedData: data,
-    })
+    // as long as we show the bottom line, React can get the data
+    res.write(data)
+    res.end()
+
+    // Render to Handlebars
+    // res.render('home', {
+    //   retrievedData: data,
+    // })
   })(req,res)
 })
 
