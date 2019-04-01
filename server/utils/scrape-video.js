@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 
+
 async function main(req,res,youtubeLink) {
   try {
     // Begin with puppeteer Code
@@ -7,7 +8,7 @@ async function main(req,res,youtubeLink) {
     // Launch the Chromium browser - have a browser object
     // show browser with: headless:false
     const browser = await puppeteer.launch({
-      // headless: false,
+      headless: false,
       args: ['--no-sandbox', '--disable-setuid-sandbox']
       // slowMo: 250 // slow down by 250ms
     });
@@ -15,7 +16,7 @@ async function main(req,res,youtubeLink) {
     // Create a new page in the browser - have a page object
     const page = await browser.newPage();
 
-    // await page.setViewport({ width: 1280, height: 800 });
+    await page.setViewport({ width: 1280, height: 800 });
 
 
     /* This Multi-comment section deals with scraping youtube channels of their videos, and doing stuff with it
@@ -187,14 +188,43 @@ async function main(req,res,youtubeLink) {
 
     console.log('out of while loop')
 
+    // If a YouTube prompt pops up, and is in the way
+
+    /* 
+If: ('paper-dialog.ytd-popup-container') shows up,
+  Click: The button: (' paper-dialog.ytd-popup-container yt-formatted-string.style-text')
+*/
+
     // The "context" of all "View # replies" buttons in the below selector, a long rectangle 'div-like' selector - AKA expander
     let expander = await page.$$('ytd-expander.ytd-comment-replies-renderer')
 
     console.log('clicking buttons')
 
+    // We only want to enter the "popup" loop once
+    let activePop = true
+
     // iterate thru all visible reply buttons
     if (expander) {
       for (let i = 0; i < expander.length; i++) {
+
+        /* Sometimes YouTube will have a "YouTube TV" prompt
+          We need to exit it in order to access the buttons at the end of the page
+          Note: popup does not go away in the HTML once it has been clicked
+
+        */
+       
+        const popup = await page.$('paper-dialog.ytd-popup-container')
+        if (activePop && popup) {
+          const popupBtn = await page.$('paper-dialog.ytd-popup-container yt-formatted-string.style-text')
+          await popupBtn.click()
+          activePop = false;
+        }
+        
+        /*
+        If: ('paper-dialog.ytd-popup-container') shows up,
+        Click: The button: (' paper-dialog.ytd-popup-container yt-formatted-string.style-text')
+        YouTube TV - No long term contract
+        */
 
         // inside the expander context, there's a "View # replies" button in the below selector
         let showMore = await expander[i].$('div.more-button')
