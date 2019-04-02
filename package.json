@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "server": "nodemon server.js",
+    "start": "concurrently \"npm run server\" \"cd client && npm start\""
   },
   "author": "Michael McCabe",
   "license": "MIT",
@@ -14,5 +15,8 @@
     "express": "^4.16.4",
     "express-handlebars": "^3.0.2",
     "puppeteer": "^1.9.0"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
   }
 }
