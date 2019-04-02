@@ -3,7 +3,7 @@ const youtubeScraper = require('../../utils')
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/youtubeData', (req, res) => {
   // page stays responsive for longer than 2 minutes
   // req.connection.setTimeout(30 * 1000);
   (async function oneVideo(req,res) {
@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
   })(req,res)
 })
 
-router.get('/', (req, res) => {
+router.get('/homepage', (req, res) => {
   res.render('home');
 });
 
