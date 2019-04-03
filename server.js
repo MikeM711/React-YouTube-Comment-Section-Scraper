@@ -28,9 +28,16 @@ app.get('/api/hello', (req,res) => {
 // POST method route example
 app.post('/api/world', (req, res) => {
   console.log(req.body.post);
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`,
-  );
+  res.write('1. hello world ')
+  setTimeout(() => {
+    res.write(
+      `2. I received your POST request. This is what you sent me: ${req.body.post}`,
+    );
+  },3000)
+
+  setTimeout(() => {
+    res.end();
+  },8000)
 });
 
 const PORT = process.env.PORT || 5000;
