@@ -33,11 +33,11 @@ app.post('/api/world', (req, res) => {
     res.write(
       `2. I received your POST request. This is what you sent me: ${req.body.post}`,
     );
-  },3000)
+  },3*1000)
 
   setTimeout(() => {
     res.end();
-  },8000)
+  },10*1000)
 });
 
 const PORT = process.env.PORT || 5000;
