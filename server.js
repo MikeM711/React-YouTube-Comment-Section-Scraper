@@ -2,21 +2,21 @@ const express = require('express');
 const exphbrs = require('express-handlebars')
 const routes = require('./server/routes')
 const bodyParser = require('body-parser');
-const path = require('path');
+// const path = require('path');
 
 const http = require("http");
 const socketIo = require("socket.io");
 
 const app = express();
 
-app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, 'build')));
-app.get('/ping', function (req, res) {
- return res.send('pong');
-});
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.use(express.static(__dirname));
+// app.use(express.static(path.join(__dirname, 'build')));
+// app.get('/ping', function (req, res) {
+//  return res.send('pong');
+// });
+// app.get('/*', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 // body parser
 app.use(bodyParser.urlencoded({
