@@ -15,7 +15,7 @@ extended: false
 app.use(bodyParser.json());
 
 // routes
-app.use('/',routes)
+
 
 // Server stuff
 const server = http.createServer(app);
@@ -24,19 +24,21 @@ const io = socketIo(server);
 io.on("connection", socket => {
  console.log('a user connected');
  // console.log(socket.id)
- socket.emit('FromAPI', 'instant msg');
+ // socket.emit('FromAPI', 'instant msg');
 });
 
 app.set('socketio', io);
 
-// Testing our socketIO - Frontend will send a GET request to this route when mounted
-app.get('/timer', (req, res) => {
- console.log('hit')
- res.send('my timer')
+app.use('/',routes)
 
- const io = req.app.get('socketio');
- io.emit('FromAPI', 'message from /timer');
-})
+// Testing our socketIO - Frontend will send a GET request to this route when mounted
+// app.get('/timer', (req, res) => {
+//  console.log('hit')
+//  res.send('my timer')
+
+//  const io = req.app.get('socketio');
+//  io.emit('FromAPI', 'message from /timer');
+// })
 
 // Handlebars
 app.set('views','./server/views')
@@ -49,23 +51,27 @@ app.get('/api/hello', (req,res) => {
 res.send({ express: 'Hello From Express' })
 })
 
-// POST method route example
-app.post('/api/world', (req, res) => {
- console.log(req.body.post);
- res.write('1. hello world ')
- io.emit('FromAPI', 'starting /api/world');
- setTimeout(() => {
-   res.write(
-     `2. I received your POST request. This is what you sent me: ${req.body.post}`,
-   );
-   io.emit('FromAPI', '3 seconds');
- },3*1000)
+app.post('/ytdata', (req,res) => {
+  console.log('Your URL is', req.body.url)
+})
 
- setTimeout(() => {
-    io.emit('FromAPI', '10 seconds');
-   res.end();
- },10*1000)
-});
+// POST method route example
+// app.post('/api/world', (req, res) => {
+//  console.log(req.body.post);
+//  res.write('1. hello world ')
+//  io.emit('FromAPI', 'starting /api/world');
+//  setTimeout(() => {
+//    res.write(
+//      `2. I received your POST request. This is what you sent me: ${req.body.post}`,
+//    );
+//    io.emit('FromAPI', '3 seconds');
+//  },3*1000)
+
+//  setTimeout(() => {
+//     io.emit('FromAPI', '10 seconds');
+//    res.end();
+//  },10*1000)
+// });
 
 const PORT = process.env.PORT || 5000;
 
