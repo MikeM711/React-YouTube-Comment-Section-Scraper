@@ -2,20 +2,23 @@ const express = require('express');
 const exphbrs = require('express-handlebars')
 const routes = require('./server/routes')
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const http = require("http");
 const socketIo = require("socket.io");
 
 const app = express();
 
+// This React/Express application now works with Heroku
+// No buildbpacks needed for this to work
+// Serve the static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 // body parser
 app.use(bodyParser.urlencoded({
 extended: false
 }));
 app.use(bodyParser.json());
-
-// routes
-
 
 // Server stuff
 const server = http.createServer(app);
@@ -72,6 +75,11 @@ app.post('/ytdata', (req,res) => {
 //    res.end();
 //  },10*1000)
 // });
+
+// Handles any requests that don't match the ones above
+app.get('*', (req,res) =>{
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 const PORT = process.env.PORT || 5000;
 

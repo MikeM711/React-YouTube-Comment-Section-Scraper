@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server.js",
-    "start": "concurrently \"npm run server\" \"cd client && npm start\""
+    "start": "concurrently \"npm run server\" \"cd client && npm start\"",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "author": "Michael McCabe",
   "license": "MIT",
