@@ -9,7 +9,8 @@ const socketIo = require("socket.io");
 
 const app = express();
 
-// No react buildback test
+// This React/Express application now works with Heroku
+// No buildbpacks needed for this to work
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
