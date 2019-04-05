@@ -7,11 +7,15 @@ router.post('/youtubeData', (req, res) => {
   // page stays responsive for longer than 2 minutes
   // req.connection.setTimeout(30 * 1000);
   (async function oneVideo(req,res) {
-    const youtubeLink = req.body.youtubeLink
+    const youtubeLink = req.body.url
+    const io = req.app.get('socketio');
+    io.emit('FromAPI', 'message from /youtubeData');
     const data = await youtubeScraper.oneVideo(req,res,youtubeLink)
     console.log(data)
     // as long as we show the bottom line, React can get the data
-    res.write(data)
+    // res.write(data) - this will show up in the frontend
+    io.emit('FromAPI', data);
+
     res.end()
 
     // Render to Handlebars
