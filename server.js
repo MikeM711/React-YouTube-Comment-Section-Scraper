@@ -15,7 +15,15 @@ extended: false
 }));
 app.use(bodyParser.json());
 
-// routes
+if (process.env.NODE_ENV === 'production') {
+  // Exprees will serve up production assets
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  // Express serve up index.html file if it doesn't recognize route
+  app.get('/*', (req, res) => {
+    res.sendFile(path.resolve(__dirname + '/client/build/index.html'))
+  })
+}
 
 
 // Server stuff
@@ -74,15 +82,7 @@ app.post('/ytdata', (req,res) => {
 //  },10*1000)
 // });
 
-if (process.env.NODE_ENV === 'production') {
-  // Exprees will serve up production assets
-  app.use(express.static(path.join(__dirname, 'client/build')));
 
-  // Express serve up index.html file if it doesn't recognize route
-  app.get('/*', (req, res) => {
-    res.sendFile(path.resolve(__dirname + '/client/build/index.html'))
-  })
-}
 
 const PORT = process.env.PORT || 5000;
 
