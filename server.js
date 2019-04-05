@@ -9,24 +9,8 @@ const socketIo = require("socket.io");
 
 const app = express();
 
-// app.use(express.static(__dirname));
-// app.use(express.static(path.join(__dirname, 'build')));
-// app.get('/ping', function (req, res) {
-//  return res.send('pong');
-// });
-// app.get('/*', function (req, res) {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
-
-if (process.env.NODE_ENV === 'production') {
-  // Exprees will serve up production assets
-  app.use(express.static(path.join(__dirname, 'build')));
-
-  // Express serve up index.html file if it doesn't recognize route
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  });
-}
+// Serve the static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // body parser
 app.use(bodyParser.urlencoded({
@@ -90,7 +74,10 @@ app.post('/ytdata', (req,res) => {
 //  },10*1000)
 // });
 
-
+// Handles any requests that don't match the ones above
+app.get('*', (req,res) =>{
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 const PORT = process.env.PORT || 5000;
 
