@@ -18,6 +18,14 @@ const app = express();
 //   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // });
 
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static('client/build'));
+}
+
+app.get('*', (request, response) => {
+	response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
 // body parser
 app.use(bodyParser.urlencoded({
 extended: false
