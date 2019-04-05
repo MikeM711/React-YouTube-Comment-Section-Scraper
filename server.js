@@ -9,15 +9,14 @@ const socketIo = require("socket.io");
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, './client/build')))
-
-app.get('*', function(_, res) {
-  res.sendFile(path.join(__dirname, './client/build/index.html'), function(err) {
-    if (err) {
-      res.status(500).send(err)
-    }
-  })
-})
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/ping', function (req, res) {
+ return res.send('pong');
+});
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // body parser
 app.use(bodyParser.urlencoded({
