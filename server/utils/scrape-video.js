@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 
 
-async function main(req,res,youtubeLink) {
+async function main(req,res,youtubeLink,io) {
   try {
     // Begin with puppeteer Code
 
@@ -93,6 +93,7 @@ async function main(req,res,youtubeLink) {
     // large video test: https://www.youtube.com/watch?v=th5QV1mnWXo
     // quick video test: https://www.youtube.com/watch?v=az8DrhofHeY
     // great test as well: https://www.youtube.com/watch?v=IHt71N47cc0
+    
     await page.goto(`${youtubeLink}`);
 
     // We know this page is loaded when the below selector renders on screen
@@ -199,6 +200,7 @@ async function main(req,res,youtubeLink) {
       if(preCommentHanlder.length < afterCommentHanlder.length){
         i++
         console.log('more comments loaded!',i)
+        await io.emit('ScrollData', `Scroll batches rendered: ${i}`);
         await res.write('more comments loaded')
       }
 
@@ -274,6 +276,8 @@ If: ('paper-dialog.ytd-popup-container') shows up,
         await console.log('spinner disappeared')
 
         await console.log(`${i + 1} " out of " ${expander.length} "comments"`)
+        await io.emit('ExpandedCommentData', `${i + 1} out of ${expander.length} comments expanded`);
+
 
         // res.send({data: 'expanded comment'})
         await res.write('expanded comment')
@@ -336,6 +340,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
         // Check if there is another level-deep of "Show more replies"
         showMoreRep = await page.$$('yt-formatted-string.yt-next-continuation')
         console.log(`${showMoreRep.length} "show more replies" buttons visible`)
+        await io.emit('ShowMoreRepData', `${showMoreRep.length} "show more replies" buttons visible`);
 
         // res.send({data: 'expanded "show more replies"'})
         await res.write('show more replies')
@@ -345,6 +350,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
       }
 
     }
+    await io.emit('ShowMoreRepData', '0 "show more replies" buttons visible');
 
     await console.log('comments expanded?')
     // ctrl+f "show more replies" = 1
@@ -477,6 +483,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
 
       if(hasReplies.length > 0){
         console.log('Replies found for',(i+1))
+        await io.emit('FindRepliesData', `Replies found for Post #${(i+1)}`);
 
         // 'replies' array needs access to data from inside the following block scope
         var replies = []
@@ -556,6 +563,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
         await res.write('finding replies')
 
         console.log('No replies found for', (i+1))
+        await io.emit('FindRepliesData', `No replies found for Post #${(i+1)}`);
         var replies = false
       }
 
@@ -577,6 +585,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
 
     }
 
+    await io.emit('FindRepliesData', '"Reply Finding" Complete!');
     const myJSON = JSON.stringify(CommentSection,null,2);
 
     // console.log(myJSON)
@@ -587,6 +596,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
     
   } catch (error) {
     console.log("our error", error)
+    await io.emit('ErrorMsg', `${error}`);
   }
 
 };
