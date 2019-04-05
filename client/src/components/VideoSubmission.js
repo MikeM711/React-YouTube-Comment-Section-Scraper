@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
+import Progress from './Progress/Progress'
 
 class VideoSubmission extends Component {
  state = {
    // data: '',
    url:'',
    // response: '',
-   ioResResult: false, // Result Response
+   ioResResult: [false], // Result Response
    ioResProgressScroll: false, // Scroll Progress
    ioResComExpand: false, // "Comments Expaned" Response Progress
    ioResShowMoreRep: false, // "Show More Replies" Response Progress
@@ -17,14 +18,6 @@ class VideoSubmission extends Component {
  }
 
 componentDidMount() {
-//    axios.get('/api/hello')
-//      .then(res => {
-//        this.setState({
-//          data: res.data.express
-//        })
-//      })
-//      .catch(err => console.log(err))
-
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
     socket.on("ResultData", data => this.setState({ ioResResult: data }));
@@ -62,11 +55,11 @@ componentDidMount() {
  }
 
  render() {
-   const {ioResResult, ioResProgressScroll,ioResComExpand,
-     ioResShowMoreRep ,iosResFindRep, ioErrMsg} = this.state
-   // console.log(ioResResult)
-   // console.log(this.state.data)
-   // const { data } = this.state
+   const {ioResResult, ioResProgressScroll, ioResComExpand,
+     ioResShowMoreRep ,ioResFindRep, ioErrMsg} = this.state
+     // Convert string to JSON object
+     const JSONresult = JSON.parse(ioResResult)
+     console.log(JSONresult[0])
    return (
      <div className="app container">
        <div>
@@ -80,14 +73,16 @@ componentDidMount() {
          </form>
        </div>
        <div>
-         <p>Your progress:</p>
-         <p>Scrolling: {ioResProgressScroll}</p>
-         <p>Expanding Comments: {ioResComExpand}</p>
-         <p>"Show More Replies" Buttons: {ioResShowMoreRep}</p>
-         <p>Finding Replies: {iosResFindRep}</p>
-         <p>{ioErrMsg}</p>
-         <p>Video: https://www.youtube.com/watch?v=IHt71N47cc0</p>
+
+         <Progress 
+          ProgressScroll = {ioResProgressScroll}
+          ComExpand= {ioResComExpand}
+          ShowMoreRep = {ioResShowMoreRep}
+          FindRep = {ioResFindRep}
+          ErrMsg = {ioErrMsg}
+         />
          <p>My ioResResult: {ioResResult}</p>
+         
        </div>
      </div>
    )
