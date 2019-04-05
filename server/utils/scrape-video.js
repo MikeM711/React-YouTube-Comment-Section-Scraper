@@ -483,7 +483,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
 
       if(hasReplies.length > 0){
         console.log('Replies found for',(i+1))
-        await io.emit('FindRepliesData', `Replies found for Post #${(i+1)}`);
+        io.emit('FindRepliesData', `Replies found for Post #${(i+1)}`);
 
         // 'replies' array needs access to data from inside the following block scope
         var replies = []
@@ -563,7 +563,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
         await res.write('finding replies')
 
         console.log('No replies found for', (i+1))
-        await io.emit('FindRepliesData', `No replies found for Post #${(i+1)}`);
+        io.emit('FindRepliesData', `No replies found for Post #${(i+1)}`);
         var replies = false
       }
 
