@@ -9,22 +9,20 @@ const socketIo = require("socket.io");
 
 const app = express();
 
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/ping', function (req, res) {
+ return res.send('pong');
+});
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 // body parser
 app.use(bodyParser.urlencoded({
 extended: false
 }));
 app.use(bodyParser.json());
-
-if (process.env.NODE_ENV === 'production') {
-  // Exprees will serve up production assets
-  app.use(express.static(path.join(__dirname, 'client/build')));
-
-  // Express serve up index.html file if it doesn't recognize route
-  app.get('/*', (req, res) => {
-    res.sendFile(path.resolve(__dirname + '/client/build/index.html'))
-  })
-}
-
 
 // Server stuff
 const server = http.createServer(app);
