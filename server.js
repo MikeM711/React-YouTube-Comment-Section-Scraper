@@ -9,6 +9,7 @@ const socketIo = require("socket.io");
 
 const app = express();
 
+// No react buildback test
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
