@@ -18,71 +18,6 @@ async function main(req,res,youtubeLink,io) {
 
     await page.setViewport({ width: 1280, height: 800 });
 
-
-    /* This Multi-comment section deals with scraping youtube channels of their videos, and doing stuff with it
-   
-    await page.goto('https://www.youtube.com/channel/UC730MnII4-CDUtUKGhPCNsA');
-   
-    // We know the page is loaded up when the container of "Home, videos, playlist,..." is found
-    await page.waitForSelector('div#tabsContainer')
-   
-    console.log('Page is showing!')
-   
-    // "Getting" that SINGULAR$ "tabs container" that has MULTIPLE$$ tabs "Home,videos,..."
-    const tabContainer = await page.$('div#tabsContainer')
-   
-    // Get ALL MULTIPLE$$ "button tabs" inside the container, that have the following paths, put it inside a variable
-    const btnTabs = await page.$$('div.tab-content')
-    //btnTabs.length = 5
-   
-    // Getting inner text
-    // const firstButtonName = await page.evaluate( button => button.innerText, button)
-    // console.log('First Button Name: ', firstButtonName) // HOME
-   
-    // The 2nd item in this list is the "Videos" tab
-    // btnTabs[1].click()
-    // Problem - it doesn't wait for pre-loading! This view gives us 13 videos
-   
-   
-    // This view gives us 32 videos
-    const preloadRes = await Promise.all([
-     page.waitForNavigation({"waitUntil" : "networkidle0"}),
-     btnTabs[1].click(),
-   ]);
-   
-   
-    // Below is the same as above! - except using goto()
-    // bypassing clicking the tab - gives me 32 videos
-    // await page.goto('https://www.youtube.com/channel/UC730MnII4-CDUtUKGhPCNsA/videos', {"waitUntil" : "networkidle0"});
-   
-   
-   
-    // Page is fully loaded when bottom is loaded
-    await page.waitForSelector('ytd-app')
-   
-    console.log('new page')
-   
-    // This view gives us 65 videos
-    // I added the line: 'await async function scrollFunc() {...}'
-    await scrollFunc()
-   
-    // Get the SINGULAR$ container that holds the MULTIPLE$$ videos
-    const ytVideoCont = await page.$('ytd-browse')
-   
-    // Get the MULTIPLE$$ videos
-    const ytVideos = await page.$$('a#thumbnail')
-   
-    // Keep scrolling to get the full length
-    console.log(ytVideos.length)
-   
-    // EXP1: Get all of the hrefs, put them into an array
-    const hrefs = await page.$$eval('a#thumbnail', aThumbs => aThumbs.map(a => a.href))
-   
-    console.log(hrefs)
-   
-    End of multi-line comment
-    */
-
     // Controversial videos, like politics, tend to have a lot of "show more replies"
     // https://www.youtube.com/watch?v=U1_ZvIVQHuI
 
@@ -135,6 +70,26 @@ async function main(req,res,youtubeLink,io) {
     // stop the video
     await videoBtn.click()
 
+    // send YouTube title to frontend
+
+    const titleSelect = 'h1.title yt-formatted-string.ytd-video-primary-info-renderer'
+
+    await page.waitForSelector(titleSelect)
+    const titleSelelctHandle = await page.$(titleSelect)
+    const titleName = await page.evaluate(title => title.innerText, titleSelelctHandle)
+    await console.log(titleName)
+
+    await io.emit('Title', titleName);
+
+    // Send back thumbnail to frontend
+
+    const videoSelect = 'ytd-page-manager.ytd-app ytd-watch-flexy'
+    const videoId = await page.$eval(videoSelect, view => view.getAttribute('video-id'))
+
+    const Thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+
+    await io.emit('Thumbnail', Thumbnail);
+
     // Below will mute the video
     // const muteBtn = await page.$('button.ytp-mute-button')
     // muteBtn.click()
@@ -170,7 +125,11 @@ async function main(req,res,youtubeLink,io) {
         comments don't get rendered out
       When we render out the page, scroll slightly and wait for comments to be loaded
     */
-    await scrollFunc(200)
+    // await scrollFunc(100)
+
+    await page.evaluate(() => {
+      window.scrollBy(0, 400);
+    });
     await page.waitForSelector('yt-formatted-string.count-text')
 
     // Fix the "Stopping on scroll" problem
@@ -242,6 +201,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
         const popup = await page.$('paper-dialog.ytd-popup-container')
         if (activePop && popup) {
           const popupBtn = await page.$('paper-dialog.ytd-popup-container yt-formatted-string.style-text')
+          await page.waitFor(500) // breathe before clicking popup
           await popupBtn.click()
           activePop = false;
         }
@@ -361,6 +321,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
 
     const toPosts = await page.$$('ytd-comment-thread-renderer.ytd-item-section-renderer') // 159
 
+    await page.waitFor(1000); // time to breathe
     const allComments = await page.$$('yt-formatted-string#content-text')
 
     console.log("We have found: ", allComments.length , "comments")
@@ -596,7 +557,18 @@ If: ('paper-dialog.ytd-popup-container') shows up,
     
   } catch (error) {
     console.log("our error", error)
-    await io.emit('ErrorMsg', `${error}`);
+
+    const navErr = "Error: Protocol error (Page.navigate): Cannot navigate to invalid URL"
+    const nullErr = `TypeError: Cannot read property 'click' of null`
+    const EvalErr = `Error: Evaluation failed`
+
+
+    if(error == navErr || error == nullErr || error.startsWith(EvalErr)){
+      await io.emit('ErrorMsg', `Error encountered. Check to make sure your URL, "${youtubeLink}", exists and try again`);
+    } else{
+      await io.emit('ErrorMsg', `${error}`);
+    }
+    
   }
 
 };

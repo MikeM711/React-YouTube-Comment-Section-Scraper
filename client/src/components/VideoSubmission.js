@@ -8,6 +8,8 @@ class VideoSubmission extends Component {
    // data: '',
    url:'',
    // response: '',
+   ioThumbnail: '',
+   ioTitle: '',
    ioResResult: [false], // Result Response
    ioResProgressScroll: false, // Scroll Progress
    ioResComExpand: false, // "Comments Expaned" Response Progress
@@ -20,11 +22,15 @@ class VideoSubmission extends Component {
 componentDidMount() {
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
-    socket.on("ResultData", data => this.setState({ ioResResult: data }));
+
+    socket.on("Title", data => this.setState({ ioTitle: data }));
+
+    socket.on("Thumbnail", data => this.setState({ ioThumbnail: data }));
     socket.on("ScrollData", data => this.setState({ioResProgressScroll: data}))
     socket.on("ExpandedCommentData", data => this.setState({ioResComExpand: data}))
     socket.on("ShowMoreRepData", data => this.setState({ioResShowMoreRep: data}))
     socket.on("FindRepliesData", data => this.setState({ioResFindRep: data}))
+    socket.on("ResultData", data => this.setState({ ioResResult: data }));
     socket.on("ErrorMsg", data => this.setState({ioErrMsg: data}))
     }
 
@@ -38,28 +44,36 @@ componentDidMount() {
  handleSubmit = (e) => {
    e.preventDefault();
    console.log('form submitted', this.state.url)
-   //2nd param passes data, the data is attached to the 'post' param - req.body.post
-   axios.post('/youtubeData',{
-     url: this.state.url
-   })
-     .then(res => {
-       console.log('hit')
-       console.log(res)
-       // put the res.data inside our state, so we can use it in the component
-       this.setState({
-         url: '',
-         // response: res.data
-       });
-     })
-     .catch(err => console.log(err))
+
+   // Only enter axios if user provides a valid YouTube link beginning
+   if(this.state.url.startsWith("https://www.youtube.com/watch?") || this.state.url.startsWith("https://m.youtube.com/watch?")){
+    //2nd param passes data, the data is attached to the 'post' param - req.body.post
+    axios.post('/youtubeData',{
+      url: this.state.url
+    })
+      .then(res => {
+        console.log('hit')
+        console.log(res)
+        // put the res.data inside our state, so we can use it in the component
+        this.setState({
+          url: '',
+          // response: res.data
+        });
+      })
+      .catch(err => console.log(err))
+    } else {
+      this.setState({
+        ioErrMsg: 'Error: please provide a valid YouTube URL'
+      })
+    }
  }
 
  render() {
-   const {ioResResult, ioResProgressScroll, ioResComExpand,
+   const {ioResResult, ioThumbnail, ioTitle, ioResProgressScroll, ioResComExpand,
      ioResShowMoreRep ,ioResFindRep, ioErrMsg} = this.state
      // Convert string to JSON object
      const JSONresult = JSON.parse(ioResResult)
-     console.log(JSONresult[0])
+     //console.log(JSONresult[0])
    return (
      <div className="app container">
        <div>
@@ -71,12 +85,12 @@ componentDidMount() {
            <input type="text" onChange={this.handleChange} value={this.state.url} />
            <button>Submit</button>
          </form>
-       </div>
-       <div>
 
          <Progress 
+          Thumbnail = {ioThumbnail}
+          Title = {ioTitle}
           ProgressScroll = {ioResProgressScroll}
-          ComExpand= {ioResComExpand}
+          ComExpand = {ioResComExpand}
           ShowMoreRep = {ioResShowMoreRep}
           FindRep = {ioResFindRep}
           ErrMsg = {ioErrMsg}
