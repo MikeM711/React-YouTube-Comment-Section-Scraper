@@ -7,7 +7,7 @@ class Reply extends Component {
     const { reply } = this.props
 
     return (
-      <div className="reply-class card" key={reply.id}>
+      <div className="reply-class collection-item" key={reply.id}>
       <img src={reply.avatarRep} alt=""></img>
         {/*
           

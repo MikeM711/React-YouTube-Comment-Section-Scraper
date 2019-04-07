@@ -1,3 +1,39 @@
+
+div.comment-thread {
+  padding-left: 10px;
+  padding-right: 10px
+}
+
+
 div.comment-class-reply {
   padding-left: 50px;
 }
+
+/*
+div.comment-header span,a {
+
+  
+}
+*/
+
+div.comment-header img, div.comment-header-creator img {
+  vertical-align:middle
+}
+
+
+div.comment-header, div.comment-header-creator{
+  background: #c2c6ce;
+  padding: 10px
+}
+
+div.comment-header-creator { 
+  background: #fffdea
+}
+
+
+div.comment-content {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 1px;
+}
+
