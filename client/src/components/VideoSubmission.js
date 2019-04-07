@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 import Progress from './Progress/Progress'
-import CommentSection from './CommentSection'
+import CommentSection from './CommentSection/CommentSection'
 
 class VideoSubmission extends Component {
  state = {
-   // data: '',
    url:'',
-   // response: '',
    ioThumbnail: '',
    ioTitle: '',
    ioResResult: false, // Result Response
