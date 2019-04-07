@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 import Progress from './Progress/Progress'
+import CommentSection from './CommentSection'
 
 class VideoSubmission extends Component {
  state = {
@@ -10,7 +11,7 @@ class VideoSubmission extends Component {
    // response: '',
    ioThumbnail: '',
    ioTitle: '',
-   ioResResult: [false], // Result Response
+   ioResResult: false, // Result Response
    ioResProgressScroll: false, // Scroll Progress
    ioResComExpand: false, // "Comments Expaned" Response Progress
    ioResShowMoreRep: false, // "Show More Replies" Response Progress
@@ -72,7 +73,6 @@ componentDidMount() {
    const {ioResResult, ioThumbnail, ioTitle, ioResProgressScroll, ioResComExpand,
      ioResShowMoreRep ,ioResFindRep, ioErrMsg} = this.state
      // Convert string to JSON object
-     const JSONresult = JSON.parse(ioResResult)
      //console.log(JSONresult[0])
    return (
      <div className="app container">
@@ -95,7 +95,10 @@ componentDidMount() {
           FindRep = {ioResFindRep}
           ErrMsg = {ioErrMsg}
          />
-         <p>My ioResResult: {ioResResult}</p>
+
+         <CommentSection 
+          Result = {ioResResult}
+         />
          
        </div>
      </div>

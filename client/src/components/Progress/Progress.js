@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Progress.css'
 
-class VideoSubmission extends Component {
+class Progress extends Component {
 
   render() {
     const { ProgressScroll, ComExpand,
@@ -32,4 +32,4 @@ class VideoSubmission extends Component {
   }
 }
 
-export default VideoSubmission;
+export default Progress;
