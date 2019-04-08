@@ -44,13 +44,17 @@ class CommentSection extends Component {
                 </span>
                 {/*<span>Creator? {Creator} </span> */}
               </div>
+
               <div className="comment-content">
                 <p>{OPcomment.comment}</p>
               </div>
+
             </div>
+
             <div className="comment-class-reply">
               {replies}
             </div>
+            
           </div>
         )
       })) : (<div className="center">No Comments found</div>)

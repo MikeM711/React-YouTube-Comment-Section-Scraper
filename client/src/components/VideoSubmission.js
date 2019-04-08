@@ -23,7 +23,6 @@ componentDidMount() {
     const socket = socketIOClient(endpoint);
 
     socket.on("Title", data => this.setState({ ioTitle: data }));
-
     socket.on("Thumbnail", data => this.setState({ ioThumbnail: data }));
     socket.on("ScrollData", data => this.setState({ioResProgressScroll: data}))
     socket.on("ExpandedCommentData", data => this.setState({ioResComExpand: data}))
@@ -68,10 +67,14 @@ componentDidMount() {
  }
 
  render() {
-   const {ioResResult, ioThumbnail, ioTitle, ioResProgressScroll, ioResComExpand,
+   const {ioThumbnail, ioTitle, ioResProgressScroll, ioResComExpand,
      ioResShowMoreRep ,ioResFindRep, ioErrMsg} = this.state
-     // Convert string to JSON object
-     //console.log(JSONresult[0])
+
+     let {ioResResult} = this.state
+
+     // If there is no "ioResResult", make the variable 'false'
+     ioResResult = ioResResult ? (ioResResult) : (false)
+
    return (
      <div className="app container">
        <div>
