@@ -4,20 +4,20 @@ import Filter from '../Filter/Filter'
 import './CommentSection.css'
 import undefAvatar from '../../Images/question-mark.jpg'
 import checkmarkImg from '../../Images/checkmark.png'
-// let JSONresult = require('../ResultTest2')
+let JSONresult = require('../ResultTest2')
 
 class CommentSection extends Component {
   state = {
-    videoCreatorComRep: false,
-    wordFilter: false,
+    videoCreatorComRep: true,
+    wordFilter: 'street',
     likesFilter: false,
     dateFilter: false, // 'hours ago'
     nameFilter: false, // 'Holtzapple Dalton'
   }
 
   render() {
-    const { Result } = this.props
-    let JSONresult = JSON.parse(Result)
+    //const { Result } = this.props
+    //let JSONresult = JSON.parse(Result)
 
     const {videoCreatorComRep, wordFilter, likesFilter, dateFilter, nameFilter} = this.state
 
@@ -105,6 +105,101 @@ class CommentSection extends Component {
     if(JSONresult){
       JSONresult = JSONresult.filter(OPpost => {
 
+        var display = true
+
+        if(videoCreatorComRep){
+          if(!OPpost.isCreator){
+            display = false
+            // future: we will continue and see if replies have any creator comments
+          }
+        }
+
+        if(wordFilter){
+          if(!OPpost.comment.toLowerCase().includes(wordFilter)){
+            display = false // future: we will continue, no null
+          }
+        }
+
+        if(likesFilter){
+          if(OPpost.likes <= likesFilter){
+            display = false // future: we will continue, no null
+          }
+        }
+
+        if(dateFilter){
+          if(!OPpost.date.includes(dateFilter)){
+            display = false // future: we will continue, no null
+          }
+        }
+
+        if(nameFilter) {
+          if(OPpost.name !== nameFilter){
+            display = false // future: we will continue, no null
+          }
+        }
+
+        // if we passed all of the "OP post" filters, display the thread
+        if(display){
+          return OPpost
+        }
+        // If we have not passed all of the "OP post" filters, we will continue on
+        // Do our replies meet our criteria?
+
+        // Filter through replies
+        function PostReplies(OPpost, display) {
+          if (OPpost.replies.length > 0) {
+            const replyPost = OPpost.replies
+            // If filter finds one reply that meets ALL criteria, return the whole thread
+            for (let i = 0; i < replyPost.length; i++) {
+              display = true
+              //console.log(replyPost[i])
+
+              if (videoCreatorComRep) {
+                if (!replyPost[i].isCreatorRep) {
+                  display = false // future: we will continue and see if replies have any creator comments
+                } else {
+                  display = true
+                }
+              }
+
+              // If display is still true, enter wordfilter
+              if(wordFilter && display){
+                if(!replyPost[i].reply.toLowerCase().includes(wordFilter)){
+                  display = false 
+                } else {
+                  display = true
+                }
+              }
+
+              // If we have passed through all of the reply filters, return out of the function
+              if(display === true){
+                return display
+              }
+
+            }
+            return display = false
+          } else {
+
+            // if no replies, just use the same "display" case
+            return display
+          }
+        }
+
+        // more filter checking
+        display = PostReplies(OPpost,display)
+        console.log(display)
+        
+        
+        if(display){
+          return OPpost
+        } else {
+          return null
+        }
+        
+
+
+        /*
+
         // return threads where the video creator is the OP
         const creatorOPFilter = OPpost.isCreator === true
         
@@ -165,6 +260,8 @@ class CommentSection extends Component {
         const display = (videoCreatorComRep || wordFilter || likesFilter || dateFilter || nameFilter) ? (filters):(OPpost)
 
         return display
+
+        */
       })
     }
     
