@@ -4,20 +4,27 @@ import Filter from '../Filter/Filter'
 import './CommentSection.css'
 import undefAvatar from '../../Images/question-mark.jpg'
 import checkmarkImg from '../../Images/checkmark.png'
-let JSONresult = require('../ResultTest2')
+// let JSONresult = require('../ResultTest2')
 
 class CommentSection extends Component {
   state = {
-    videoCreatorComRep: true,
+    videoCreatorComRep: false,
     wordFilter: false,
     likesFilter: false,
     dateFilter: false, // 'hours ago'
     nameFilter: false, // 'Holtzapple Dalton'
   }
 
+  handleCreatorFilter = (isActive) => {
+    // console.log(isActive)
+    this.setState({
+      videoCreatorComRep: isActive,
+    })
+  }
+
   render() {
-    //const { Result } = this.props
-    //let JSONresult = JSON.parse(Result)
+    const { Result } = this.props
+    let JSONresult = JSON.parse(Result)
 
     const {videoCreatorComRep, wordFilter, likesFilter, dateFilter, nameFilter} = this.state
 
@@ -200,7 +207,9 @@ class CommentSection extends Component {
         <div>
           <h2>Result</h2>
         </div>
-          <Filter />
+          <Filter 
+            creatorFilter = {this.handleCreatorFilter}
+          />
         {/* Filter component 
           - Have a "filter state"
           - send "filter" instructions by function out of component

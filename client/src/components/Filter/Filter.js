@@ -6,9 +6,14 @@ class Filter extends Component {
   }
 
   handlevideoCreator = () => {
-    this.setState({
-      videoCreatorComRep: !this.state.videoCreatorComRep
+    this.setState((state,props) => ({
+      videoCreatorComRep: !state.videoCreatorComRep
+    }), () => {
+      this.props.creatorFilter(this.state.videoCreatorComRep) 
     })
+    
+    // 
+
   }
 
   render() {
