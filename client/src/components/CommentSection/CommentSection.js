@@ -9,8 +9,8 @@ let JSONresult = require('../ResultTest2')
 class CommentSection extends Component {
   state = {
     videoCreatorComRep: false,
-    wordFilter: false,
-    likesFilter: false,
+    wordFilter: 'sky',
+    likesFilter: 0,
     dateFilter: false, // 'hours ago'
     nameFilter: false, // 'Holtzapple Dalton'
   }
@@ -37,43 +37,58 @@ class CommentSection extends Component {
         if(videoCreatorComRep){
           if(!OPpost.isCreator){
             display = false
+            OPpost.filter = false
             // future: we will continue and see if replies have any creator comments
+          } else {
+            OPpost.filter = true
           }
         }
 
         if(wordFilter){
           if(!OPpost.comment.toLowerCase().includes(wordFilter)){
             display = false // future: we will continue, no null
+            OPpost.filter = false
+          } else {
+            OPpost.filter = true
           }
         }
 
         if(likesFilter){
           if(OPpost.likes < likesFilter){
             display = false // future: we will continue, no null
+            OPpost.filter = false
+          } else {
+            OPpost.filter = true
           }
         }
 
         if(dateFilter){
           if(!OPpost.date.includes(dateFilter)){
             display = false // future: we will continue, no null
+            OPpost.filter = false
+          } else {
+            OPpost.filter = true
           }
         }
 
         if(nameFilter) {
           if(OPpost.name !== nameFilter){
             display = false // future: we will continue, no null
+          } else {
+            OPpost.filter = true
           }
         }
 
         // if we passed all of the "OP post" filters, display the thread
         if(display){
-          return OPpost
+          OPpost.display = true
         }
         // If we have not passed all of the "OP post" filters, we will continue on
         // Do our replies meet our criteria?
 
         // Filter through replies
         function PostReplies(OPpost, display) {
+          var repDisplay = false
           if (OPpost.replies.length > 0) {
             const replyPost = OPpost.replies
             // If filter finds one reply that meets ALL criteria, return the whole thread
@@ -84,8 +99,10 @@ class CommentSection extends Component {
               if (videoCreatorComRep) {
                 if (!replyPost[i].isCreatorRep) {
                   display = false // future: we will continue and see if replies have any creator comments
+                  replyPost[i].filter = false
                 } else {
                   display = true
+                  replyPost[i].filter = true
                 }
               }
 
@@ -93,42 +110,52 @@ class CommentSection extends Component {
               if(wordFilter && display){
                 if(!replyPost[i].reply.toLowerCase().includes(wordFilter)){
                   display = false 
+                  replyPost[i].filter = false
                 } else {
                   display = true
+                  replyPost[i].filter = true
                 }
               }
 
               if(likesFilter && display){
                 if(replyPost[i].likesRep < likesFilter){
                   display = false // future: we will continue, no null
+                  replyPost[i].filter = false
                 } else {
                   display = true
+                  replyPost[i].filter = true
                 }
               }
 
               if(dateFilter && display){
                 if(!replyPost[i].dateRep.includes(dateFilter)){
                   display = false // future: we will continue, no null
+                  replyPost[i].filter = false
                 } else {
                   display = true
+                  replyPost[i].filter = true
                 }
               }
 
               if(nameFilter && display) {
                 if(replyPost[i].nameRep !== nameFilter){
                   display = false // future: we will continue, no null
+                  replyPost[i].filter = false
                 } else {
                   display = true
+                  replyPost[i].filter = true
                 }
               }
 
               // If we have passed through all of the reply filters, return out of the function
               if(display === true){
-                return display
+                repDisplay = true
               }
 
             }
-            return display = false
+            if(repDisplay === true){
+              return repDisplay
+            }
           } else {
 
             // if no replies, just use the same "display" case
@@ -137,9 +164,11 @@ class CommentSection extends Component {
         }
 
         // more filter checking
-        display = PostReplies(OPpost,display)
+        const repDisplay = PostReplies(OPpost,display)
         
-        if(display){
+        // if(display){
+
+        if(OPpost.display || repDisplay ){
           return OPpost
         } else {
           return null
@@ -159,7 +188,11 @@ class CommentSection extends Component {
         // Below variable adds "finder" to the className of a div to show what post has been found, due to filtering
         
         // const finder = " finder"
-        const finder = ""
+        var finder = ""
+
+        if(OPcomment.filter === true){
+          finder = "finder"
+        }
         
         const replies = OPcomment.replies.length ? (
           OPcomment.replies.map(reply => {

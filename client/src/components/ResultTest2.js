@@ -14,13 +14,13 @@ module.exports =
       "replies": [
         {
           "id": 0,
-          "avatarRep": "https://yt3.ggpht.com/-jHUDd_hw7LU/AAAAAAAAAAI/AAAAAAAAAAA/8rrkp36e9bA/s48-c-k-no-mo-rj-c0xffffff/photo.jpg",
-          "nameRep": "reppin trini",
+          "avatarRep": "https://yt3.ggpht.com/-gVuW1PB5eQU/AAAAAAAAAAI/AAAAAAAAAAA/TFf3A48Pyuk/s48-c-k-no-mo-rj-c0xffffff/photo.jpg",
+      "nameRep": "National Geographic",
           "dateRep": "2 days ago",
-          "reply": "Alot a whole lot from street lights to house hold lights.even cars n vehicles.big disaster﻿",
+          "reply": "Alot a whole lot from night street to house hold .even cars n vehicles.big disaster﻿",
           "likesRep": "0",
           "linkRep": "https://www.youtube.com/watch?v=IHt71N47cc0&lc=Ugz_pNjb19S49jcNcAF4AaABAg.8tJVZMUbnmi8tJ_7Z2T2NW",
-          "isCreatorRep": false
+          "isCreatorRep": true
         },
         {
           "id": 1,

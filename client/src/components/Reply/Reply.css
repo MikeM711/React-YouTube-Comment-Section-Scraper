@@ -11,9 +11,12 @@ div.reply-header-creator {
   background: #fffdea
 }
 
-
 div.reply-content {
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 1px;
+}
+
+div.finder {
+  background: #c3ffb5;
 }

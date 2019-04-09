@@ -12,6 +12,11 @@ class Reply extends Component {
     const checkmarkRep = reply.isCreatorRep ? (checkmarkImg) : (null)
     const AvatarRep = reply.avatarRep !== "" ? (reply.avatarRep) : (undefAvatar)
 
+    var finder = ""
+        if(reply.filter === true){
+          finder = "finder"
+        }
+
     return (
       <div className="reply-class collection-item" key={reply.id}>
         <div className={CreatorRep}>
@@ -23,7 +28,7 @@ class Reply extends Component {
           <a href={reply.linkRep} target="_blank" rel="noopener noreferrer" >Context</a>
           {/*<span>Creator? {Creator} </span> */}
         </div>
-        <div className="reply-content">
+        <div className={"reply-content " + finder}>
           <p>{reply.reply}</p>
         </div>
       </div>
