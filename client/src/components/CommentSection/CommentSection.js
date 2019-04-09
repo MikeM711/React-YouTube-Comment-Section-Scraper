@@ -9,7 +9,7 @@ let JSONresult = require('../ResultTest2')
 class CommentSection extends Component {
   state = {
     videoCreatorComRep: true,
-    wordFilter: 'street',
+    wordFilter: false,
     likesFilter: false,
     dateFilter: false, // 'hours ago'
     nameFilter: false, // 'Holtzapple Dalton'
@@ -20,86 +20,6 @@ class CommentSection extends Component {
     //let JSONresult = JSON.parse(Result)
 
     const {videoCreatorComRep, wordFilter, likesFilter, dateFilter, nameFilter} = this.state
-
-    function CreatorReplyFilter(OPpost) {
-      if (OPpost.replies) {
-        var creatorReply = OPpost.replies.filter(replyPost => {
-          return replyPost.isCreatorRep === true
-        })
-        if(creatorReply.length > 0){
-          return OPpost
-        }
-      } 
-      return null
-    }
-
-    function LikesReplyFilter(OPpost,likeBound){
-      if (OPpost.replies) {
-        var likesRepFilter = OPpost.replies.filter(replyPost => {
-          let numRepLikes = Number(replyPost.likesRep)
-          return numRepLikes >= likeBound
-        })
-
-        if (likesRepFilter.length > 0) {
-          return OPpost
-        } else {
-          return null
-        }
-      }
-    }
-
-    function StringReplyFilter(OPpost,repStr) {
-      if (OPpost.replies) {
-        var stringReply = OPpost.replies.filter(replyPost => {
-          return replyPost.reply.toLowerCase().includes(repStr)
-        })
-        if(stringReply.length > 0){
-          return OPpost
-        }
-      } 
-      return null
-    }
-
-    function LikesOPFilter(OPpost,likeBound) {
-      if(OPpost.likes >= likeBound){
-        return OPpost
-      } else {
-        return null
-      }
-    }
-
-    function DateOPFilter(OPpost,time) {
-
-      if(OPpost.date.includes(time)){
-        return OPpost
-      } else {
-        return null
-      }
-    }
-
-    function DateReplyFilter(OPpost, time) {
-      if (OPpost.replies) {
-        var stringReply = OPpost.replies.filter(replyPost => {
-          return replyPost.dateRep.includes(time)
-        })
-        if(stringReply.length > 0){
-          return OPpost
-        }
-      } 
-      return null
-    }
-
-    function NameReplyFilter(OPpost,YTname) {
-      if (OPpost.replies) {
-        var stringReply = OPpost.replies.filter(replyPost => {
-          return replyPost.nameRep === YTname
-        })
-        if(stringReply.length > 0){
-          return OPpost
-        }
-      } 
-      return null
-    }
 
     // Filtering example
     if(JSONresult){
@@ -121,7 +41,7 @@ class CommentSection extends Component {
         }
 
         if(likesFilter){
-          if(OPpost.likes <= likesFilter){
+          if(OPpost.likes < likesFilter){
             display = false // future: we will continue, no null
           }
         }
@@ -162,10 +82,34 @@ class CommentSection extends Component {
                 }
               }
 
-              // If display is still true, enter wordfilter
+              // If display is still true, enter wordfilter if it exists
               if(wordFilter && display){
                 if(!replyPost[i].reply.toLowerCase().includes(wordFilter)){
                   display = false 
+                } else {
+                  display = true
+                }
+              }
+
+              if(likesFilter && display){
+                if(replyPost[i].likesRep < likesFilter){
+                  display = false // future: we will continue, no null
+                } else {
+                  display = true
+                }
+              }
+
+              if(dateFilter && display){
+                if(!replyPost[i].dateRep.includes(dateFilter)){
+                  display = false // future: we will continue, no null
+                } else {
+                  display = true
+                }
+              }
+
+              if(nameFilter && display) {
+                if(replyPost[i].nameRep !== nameFilter){
+                  display = false // future: we will continue, no null
                 } else {
                   display = true
                 }
@@ -187,81 +131,13 @@ class CommentSection extends Component {
 
         // more filter checking
         display = PostReplies(OPpost,display)
-        console.log(display)
-        
         
         if(display){
           return OPpost
         } else {
           return null
         }
-        
 
-
-        /*
-
-        // return threads where the video creator is the OP
-        const creatorOPFilter = OPpost.isCreator === true
-        
-        // return threads where the video creator is the replier
-        const creatorRepFilter = CreatorReplyFilter(OPpost)
-
-        // True: Returns video creator threads AND video creator replies
-        const creatorSectFilter = videoCreatorComRep === true ? (
-          creatorOPFilter || creatorRepFilter
-          ) : (creatorSectFilter)
-
-        // return threads where the OP includes a certain string
-        const stringOPFilter = OPpost.comment.toLowerCase().includes(wordFilter)
-
-        // return threads where the replier includes a certain string
-        const stringRepFilter = StringReplyFilter(OPpost, wordFilter);
-
-        // True: Returns full threads if a certain word is used in an OP post or reply
-        const stringSectFilter = wordFilter === true ? (
-          stringOPFilter || stringRepFilter
-          ) : (stringSectFilter)
-        
-        // return threads where OP has a certain amount of likes
-        const likesOPFilter = LikesOPFilter(OPpost,likesFilter)
-
-        // return threads that have one or more replies of a certain amount of likes
-        const likesRepFilter = LikesReplyFilter(OPpost,likesFilter)
-
-        // Returns full threads if OP or Reply has a certain amount of likes
-        const likesSectFilter = likesFilter ? (
-          likesOPFilter || likesRepFilter
-          ) : (likesSectFilter)
-
-        // return threads that were made within 24 hours
-        const dateOPFilter = DateOPFilter(OPpost, dateFilter)
-
-        // return threads where a reply was made within 24 hours
-        const dateRepFilter = DateReplyFilter(OPpost, dateFilter)
-
-        // Returns full thread if OP or Reply have a certain date
-        const dateSectFilter = dateFilter ? (
-          dateOPFilter || dateRepFilter
-          ) : (dateSectFilter)
-
-        // return threads created by a certain user
-        const nameOPFilter = OPpost.name === nameFilter
-
-        const nameRepFilter = NameReplyFilter(OPpost,nameFilter)
-
-        // Returns full thread if OP or Reply are created by a certain person
-        const nameSectFilter = nameFilter ? (
-          nameOPFilter || nameRepFilter
-          ) : (nameSectFilter)
-
-        const filters = creatorSectFilter || stringSectFilter || likesSectFilter || dateSectFilter || nameSectFilter
-
-        // If all filters in the state are false, show all posts and comments 
-        const display = (videoCreatorComRep || wordFilter || likesFilter || dateFilter || nameFilter) ? (filters):(OPpost)
-
-        return display
-
-        */
       })
     }
     
