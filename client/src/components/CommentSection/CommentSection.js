@@ -4,7 +4,7 @@ import Filter from '../Filter/Filter'
 import './CommentSection.css'
 import undefAvatar from '../../Images/question-mark.jpg'
 import checkmarkImg from '../../Images/checkmark.png'
-// let JSONresult = require('../ResultTest2')
+let JSONresult = require('../ResultTest2')
 
 class CommentSection extends Component {
   state = {
@@ -23,8 +23,8 @@ class CommentSection extends Component {
   }
 
   render() {
-    const { Result } = this.props
-    let JSONresult = JSON.parse(Result)
+    // const { Result } = this.props
+    // let JSONresult = JSON.parse(Result)
 
     const {videoCreatorComRep, wordFilter, likesFilter, dateFilter, nameFilter} = this.state
 
@@ -188,7 +188,7 @@ class CommentSection extends Component {
                 {/*<span>Creator? {Creator} </span> */}
               </div>
 
-              <div className={"comment-content" + finder}>
+              <div className={"comment-content " + finder}>
                 <p>{OPcomment.comment}</p>
               </div>
 
