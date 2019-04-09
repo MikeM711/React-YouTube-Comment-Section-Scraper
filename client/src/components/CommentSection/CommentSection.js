@@ -4,20 +4,20 @@ import Filter from '../Filter/Filter'
 import './CommentSection.css'
 import undefAvatar from '../../Images/question-mark.jpg'
 import checkmarkImg from '../../Images/checkmark.png'
-let JSONresult = require('../ResultTest2')
+// let JSONresult = require('../ResultTest2')
 
 class CommentSection extends Component {
   state = {
     videoCreatorComRep: false,
     wordFilter: false,
     likesFilter: false,
-    dateFilter: false,
-    nameFilter: true,
+    dateFilter: false, // 'hours ago'
+    nameFilter: false, // 'Holtzapple Dalton'
   }
 
   render() {
-    // const { Result } = this.props
-    // let JSONresult = JSON.parse(Result)
+    const { Result } = this.props
+    let JSONresult = JSON.parse(Result)
 
     const {videoCreatorComRep, wordFilter, likesFilter, dateFilter, nameFilter} = this.state
 
@@ -35,12 +35,12 @@ class CommentSection extends Component {
 
     function LikesReplyFilter(OPpost,likeBound){
       if (OPpost.replies) {
-        var likesFilter = OPpost.replies.filter(replyPost => {
+        var likesRepFilter = OPpost.replies.filter(replyPost => {
           let numRepLikes = Number(replyPost.likesRep)
           return numRepLikes >= likeBound
         })
 
-        if (likesFilter.length > 0) {
+        if (likesRepFilter.length > 0) {
           return OPpost
         } else {
           return null
@@ -117,10 +117,10 @@ class CommentSection extends Component {
           ) : (creatorSectFilter)
 
         // return threads where the OP includes a certain string
-        const stringOPFilter = OPpost.comment.toLowerCase().includes('night')
+        const stringOPFilter = OPpost.comment.toLowerCase().includes(wordFilter)
 
         // return threads where the replier includes a certain string
-        const stringRepFilter = StringReplyFilter(OPpost, 'night');
+        const stringRepFilter = StringReplyFilter(OPpost, wordFilter);
 
         // True: Returns full threads if a certain word is used in an OP post or reply
         const stringSectFilter = wordFilter === true ? (
@@ -128,41 +128,41 @@ class CommentSection extends Component {
           ) : (stringSectFilter)
         
         // return threads where OP has a certain amount of likes
-        const likesOPFilter = LikesOPFilter(OPpost,10)
+        const likesOPFilter = LikesOPFilter(OPpost,likesFilter)
 
         // return threads that have one or more replies of a certain amount of likes
-        const likesRepFilter = LikesReplyFilter(OPpost,10)
+        const likesRepFilter = LikesReplyFilter(OPpost,likesFilter)
 
         // Returns full threads if OP or Reply has a certain amount of likes
-        const likesSectFilter = likesFilter === true ? (
+        const likesSectFilter = likesFilter ? (
           likesOPFilter || likesRepFilter
           ) : (likesSectFilter)
 
         // return threads that were made within 24 hours
-        const dateOPFilter = DateOPFilter(OPpost, 'hours ago')
+        const dateOPFilter = DateOPFilter(OPpost, dateFilter)
 
         // return threads where a reply was made within 24 hours
-        const dateRepFilter = DateReplyFilter(OPpost, 'hours ago')
+        const dateRepFilter = DateReplyFilter(OPpost, dateFilter)
 
         // Returns full thread if OP or Reply have a certain date
-        const dateSectFilter = dateFilter === true ? (
+        const dateSectFilter = dateFilter ? (
           dateOPFilter || dateRepFilter
           ) : (dateSectFilter)
 
         // return threads created by a certain user
-        const nameOPFilter = OPpost.name === "Holtzapple Dalton"
+        const nameOPFilter = OPpost.name === nameFilter
 
-        const nameRepFilter = NameReplyFilter(OPpost,"Holtzapple Dalton")
+        const nameRepFilter = NameReplyFilter(OPpost,nameFilter)
 
         // Returns full thread if OP or Reply are created by a certain person
-        const nameSectFilter = nameFilter === true ? (
+        const nameSectFilter = nameFilter ? (
           nameOPFilter || nameRepFilter
           ) : (nameSectFilter)
 
         const filters = creatorSectFilter || stringSectFilter || likesSectFilter || dateSectFilter || nameSectFilter
 
         // If all filters in the state are false, show all posts and comments 
-        const display = (videoCreatorComRep || wordFilter || likesFilter || dateFilter || nameFilter) === true ? (filters): (OPpost)
+        const display = (videoCreatorComRep || wordFilter || likesFilter || dateFilter || nameFilter) ? (filters):(OPpost)
 
         return display
       })
