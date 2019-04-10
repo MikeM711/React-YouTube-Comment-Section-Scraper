@@ -5,6 +5,7 @@ class Filter extends Component {
   state = {
     videoCreatorComRep: false,
     wordFilterText: false,
+    likesFilterNum: '',
     wordFilterClick:'',
   }
 
@@ -17,12 +18,25 @@ class Filter extends Component {
   }
 
   handleWordFilterChange = (event) => {
-    const value = event.target.value
+    const value = event.target.value.toLowerCase()
+    console.log(value)
     this.setState((state,props) => ({
       wordFilterText: value
     }), () => {
-    this.props.wordFilter(value)
+      this.props.wordFilter(value)
     })
+  }
+
+  handleLikesFilterChange = (event) => {
+    const value = event.target.value
+    const re = /^[0-9\b]+$/; // only allow Numbers (0 - 9)
+    if (event.target.value === '' || re.test(event.target.value)) {
+      this.setState((state, props) => ({
+        likesFilterNum: value
+      }), () => {
+        this.props.LikesFilter(value)
+      })
+    }
   }
 
 
@@ -34,18 +48,33 @@ class Filter extends Component {
       <div className="filter-class">
         <h2>Filter</h2>
 
-        <form action="#">
+        <form action="#" className="filter-form">
           <p>
             <label>
+              <span className="word-filter-text">Comments by the Video Creator</span>
               <input 
+                className="word-filter-checkbox filled-in"
                 type="checkbox" 
-                className="filled-in" 
                 checked={this.state.videoCreatorComRep}
                 onChange={() => { this.handleVideoCreator() }}
               />
-              <span>Comments by the Video Creator</span>
+              {/* In order to show the checkbox, I need to have a span tag after it.
+                The span tag includes a space - meaning: you can click a little to the right, and a click will still register */}
+              <span>&nbsp;</span>
             </label>
           </p>
+
+          <div className="likes-filter-input">
+            <label className="likes-filter-label" htmlFor="likes-filter">Comments that have at least this many likes: </label>
+            <input 
+              id="likes-filter" 
+              type="number" 
+              className="browser-default" 
+              min="0"
+              value={this.state.likesFilterNum}
+              onChange={this.handleLikesFilterChange}
+            />
+          </div>
 
           <div className="row">
             <div className="input-field col s6">
@@ -63,27 +92,8 @@ class Filter extends Component {
             </div>
           </div>
 
-          {/*
-          <div className="row no-padding-bottom">
-            <div className="word-filter col s12">
-              Contains the following: 
-                <div className="input-field inline word-filter">
-                <input id="word-filter-inline" type="text" />
-              </div>
-            </div>
-          </div>
-
-          <div className="row no-padding-bottom">
-            <div className="word-filter col s12">
-              At least this many likes: 
-                <div className="input-field inline word-filter">
-                <input id="word-filter-inline" type="number" />
-              </div>
-            </div>
-          </div>
-          */}
-
-
+           
+          
 
         </form>
 

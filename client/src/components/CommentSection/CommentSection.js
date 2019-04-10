@@ -28,6 +28,13 @@ class CommentSection extends Component {
     })
   }
 
+  handleLikesFilter = (num) => {
+    num = Number(num)
+    this.setState({
+      likesFilter: num,
+    })
+  }
+
   render() {
     const { Result } = this.props
     let JSONresult = JSON.parse(Result)
@@ -249,6 +256,7 @@ class CommentSection extends Component {
           <Filter 
             creatorFilter = {this.handleCreatorFilter}
             wordFilter = {this.handleWordFilter}
+            LikesFilter = {this.handleLikesFilter}
           />
         {/* Filter component 
           - Have a "filter state"
