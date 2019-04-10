@@ -70,7 +70,8 @@ componentDidMount() {
    const {ioThumbnail, ioTitle, ioResProgressScroll, ioResComExpand,
      ioResShowMoreRep ,ioResFindRep, ioErrMsg} = this.state
 
-     let {ioResResult} = this.state
+     let {ioResResult} = this.state // production
+     // let ioResResult = JSON.stringify(require('./ResultTest2')) // testing
 
      // If there is no "ioResResult", make the variable 'false'
      ioResResult = ioResResult ? (ioResResult) : (false)

@@ -3,23 +3,32 @@ import './Filter.css'
 
 class Filter extends Component {
   state = {
-    videoCreatorComRep: false
+    videoCreatorComRep: false,
+    wordFilterText: false,
+    wordFilterClick:'',
   }
 
-  handlevideoCreator = () => {
+  handleVideoCreator = () => {
     this.setState((state,props) => ({
       videoCreatorComRep: !state.videoCreatorComRep
     }), () => {
       this.props.creatorFilter(this.state.videoCreatorComRep) 
     })
-    
-    // 
-
   }
+
+  handleWordFilterChange = (event) => {
+    const value = event.target.value
+    this.setState((state,props) => ({
+      wordFilterText: value
+    }), () => {
+    this.props.wordFilter(value)
+    })
+  }
+
 
   render() {
     // const { Result } = this.props
-    let wordFiltActive = "active"
+    let { wordFilterClick } = this.state
 
     return (
       <div className="filter-class">
@@ -32,7 +41,7 @@ class Filter extends Component {
                 type="checkbox" 
                 className="filled-in" 
                 checked={this.state.videoCreatorComRep}
-                onChange={() => { this.handlevideoCreator() }}
+                onChange={() => { this.handleVideoCreator() }}
               />
               <span>Comments by the Video Creator</span>
             </label>
@@ -43,8 +52,14 @@ class Filter extends Component {
               <input 
                 id="word-filter" 
                 type="text"
+                onBlur={() => { 
+                  if(!this.state.wordFilterText){
+                    this.setState({wordFilterClick: ''}) }
+                  }}
+                onFocus={() => { this.setState({wordFilterClick: 'active'}) }}
+                onChange={this.handleWordFilterChange}
                 />
-              <label className={"word-filter-label " + wordFiltActive}  htmlFor="word-filter">Comments that contain the following phrase</label>
+              <label className={"word-filter-label " + wordFilterClick}  htmlFor="word-filter">Comments that contain the following phrase</label>
             </div>
           </div>
 

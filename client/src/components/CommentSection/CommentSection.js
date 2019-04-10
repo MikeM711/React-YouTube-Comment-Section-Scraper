@@ -4,13 +4,12 @@ import Filter from '../Filter/Filter'
 import './CommentSection.css'
 import undefAvatar from '../../Images/question-mark.jpg'
 import checkmarkImg from '../../Images/checkmark.png'
-let JSONresult = require('../ResultTest2')
 
 class CommentSection extends Component {
   state = {
     videoCreatorComRep: false,
-    wordFilter: 'sky',
-    likesFilter: 0,
+    wordFilter: false,
+    likesFilter: false,
     dateFilter: false, // 'hours ago'
     nameFilter: false, // 'Holtzapple Dalton'
   }
@@ -22,9 +21,16 @@ class CommentSection extends Component {
     })
   }
 
+  handleWordFilter = (str) => {
+    // console.log('comment section component',str)
+    this.setState({
+      wordFilter: str,
+    })
+  }
+
   render() {
-    // const { Result } = this.props
-    // let JSONresult = JSON.parse(Result)
+    const { Result } = this.props
+    let JSONresult = JSON.parse(Result)
 
     const {videoCreatorComRep, wordFilter, likesFilter, dateFilter, nameFilter} = this.state
 
@@ -34,7 +40,7 @@ class CommentSection extends Component {
 
         var display = true
 
-        if(videoCreatorComRep){
+        if(videoCreatorComRep && display){
           if(!OPpost.isCreator){
             display = false
             OPpost.filter = false
@@ -44,7 +50,7 @@ class CommentSection extends Component {
           }
         }
 
-        if(wordFilter){
+        if(wordFilter && display){
           if(!OPpost.comment.toLowerCase().includes(wordFilter)){
             display = false // future: we will continue, no null
             OPpost.filter = false
@@ -53,7 +59,7 @@ class CommentSection extends Component {
           }
         }
 
-        if(likesFilter){
+        if(likesFilter && display){
           if(OPpost.likes < likesFilter){
             display = false // future: we will continue, no null
             OPpost.filter = false
@@ -62,7 +68,7 @@ class CommentSection extends Component {
           }
         }
 
-        if(dateFilter){
+        if(dateFilter && display){
           if(!OPpost.date.includes(dateFilter)){
             display = false // future: we will continue, no null
             OPpost.filter = false
@@ -71,7 +77,7 @@ class CommentSection extends Component {
           }
         }
 
-        if(nameFilter) {
+        if(nameFilter && display) {
           if(OPpost.name !== nameFilter){
             display = false // future: we will continue, no null
           } else {
@@ -242,6 +248,7 @@ class CommentSection extends Component {
         </div>
           <Filter 
             creatorFilter = {this.handleCreatorFilter}
+            wordFilter = {this.handleWordFilter}
           />
         {/* Filter component 
           - Have a "filter state"
