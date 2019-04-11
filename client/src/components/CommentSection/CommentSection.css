@@ -42,3 +42,8 @@ div.finder {
   background: #c3ffb5;
 }
 
+div.no-comments-card {
+  padding-top: 20px;
+  padding-bottom: 20px
+}
+

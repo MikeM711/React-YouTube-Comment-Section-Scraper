@@ -3,10 +3,9 @@ form.filter-form {
 }
 
 div.input-field {
-    padding-left: 0px
+    padding-left: 0px;
+    margin-bottom: 0px
 }
-
-.no-padding-bottom {padding-bottom:0px !important}
 
 label.likes-filter-label {
     font-size: 15px;
@@ -22,20 +21,36 @@ div.likes-filter-input {
 }
 
 input#word-filter {
-    padding-right: 0px
+    padding-right: 0px;
 }
 
-span.word-filter-text {
+span.creator-filter-text {
     font-size: 15px;
-    padding-right: 10px
+    padding-right: 10px;
+    vertical-align: top;
 }
 
-div.row{
+div.word-filter-row{
     margin: 0px;
     margin-left: -10px
 }
 
+div.user-filter-row{
+    margin: 0px;
+    margin-left: -10px;
+}
+
 select.date-filter {
     width: 50%;
-    margin-left: 0px
+    margin-left: 0px;
+    margin-top: 10px;
+}
+
+[type="checkbox"].filled-in:not(:checked)+span:not(.lever):after {
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    border: 1px solid #a9a9a9;
+    top: 0px;
+    z-index: 0;
 }

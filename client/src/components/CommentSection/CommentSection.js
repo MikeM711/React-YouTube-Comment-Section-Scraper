@@ -41,6 +41,12 @@ class CommentSection extends Component {
     })
   }
 
+  handleNameFilter = (name) => {
+    this.setState({
+      nameFilter: name,
+    })
+  }
+
   render() {
     const { Result } = this.props
     let JSONresult = JSON.parse(Result)
@@ -96,8 +102,9 @@ class CommentSection extends Component {
         }
 
         if(nameFilter && display) {
-          if(OPpost.name !== nameFilter){
+          if(OPpost.name.toLowerCase() !== nameFilter.trim()){
             display = false // future: we will continue, no null
+            OPpost.filter = false
           } else {
             OPpost.filter = true
           }
@@ -165,7 +172,7 @@ class CommentSection extends Component {
               }
 
               if(nameFilter && display) {
-                if(replyPost[i].nameRep !== nameFilter){
+                if(replyPost[i].nameRep.toLowerCase() !== nameFilter.trim()){
                   display = false // future: we will continue, no null
                   replyPost[i].filter = false
                 } else {
@@ -260,7 +267,7 @@ class CommentSection extends Component {
             
           </div>
         )
-      })) : (<div className="center">No Comments found</div>)
+      })) : (<div className="center card no-comments-card">No Comments found</div>)
 
     return (
       <div className="progress-class">
@@ -272,6 +279,7 @@ class CommentSection extends Component {
             wordFilter = {this.handleWordFilter}
             LikesFilter = {this.handleLikesFilter}
             dateFilter = {this.handleDateFilter}
+            nameFilter = {this.handleNameFilter}
           />
         <div className="comment-class">
           {comments}
