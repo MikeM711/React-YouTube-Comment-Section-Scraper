@@ -10,6 +10,7 @@ class VideoSubmission extends Component {
    url:'',
    ioThumbnail: '',
    ioTitle: '',
+   ioVideoFound: false,
    ioResResult: false, // Result Response
    ioResProgressScroll: false, // Scroll Progress
    ioResComExpand: false, // "Comments Expaned" Response Progress
@@ -27,6 +28,7 @@ componentDidMount() {
     const socket = socketIOClient(endpoint);
 
     socket.on("Title", data => this.setState({ ioTitle: data }));
+    socket.on("VideoFound", data => this.setState({ ioVideoFound: data }));
     socket.on("Thumbnail", data => this.setState({ ioThumbnail: data }));
     socket.on("ScrollData", data => this.setState({ioResProgressScroll: data}))
     socket.on("ExpandedCommentData", data => this.setState({ioResComExpand: data}))
@@ -84,14 +86,16 @@ componentDidMount() {
  }
 
  render() {
-   const {ioThumbnail, ioTitle, ioResProgressScroll, ioResComExpand,
+   const {ioThumbnail, ioTitle, ioVideoFound, ioResProgressScroll, ioResComExpand,
      ioResShowMoreRep ,ioResFindRep, ioErrMsg} = this.state
 
      // Component Activation
-     const {formActive, progressActive, resultsActive} = this.state 
+     let {formActive, progressActive, resultsActive} = this.state 
 
      let {ioResResult} = this.state // production
      // let ioResResult = JSON.stringify(require('./ResultTest2')) // testing
+     // resultsActive = true // testing
+     // progressActive = true // testing
 
      // If there is no "ioResResult", make the variable 'false'
      ioResResult = ioResResult ? (ioResResult) : (false)
@@ -114,6 +118,7 @@ componentDidMount() {
            <Progress
              Thumbnail={ioThumbnail}
              Title={ioTitle}
+             VideoFound={ioVideoFound}
              ProgressScroll={ioResProgressScroll}
              ComExpand={ioResComExpand}
              ShowMoreRep={ioResShowMoreRep}

@@ -89,6 +89,8 @@ async function main(req,res,youtubeLink,io) {
     const Thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
 
     await io.emit('Thumbnail', Thumbnail);
+    await io.emit('VideoFound', true)
+    await io.emit('ScrollData', 'Starting Scroll');
 
     // Below will mute the video
     // const muteBtn = await page.$('button.ytp-mute-button')
@@ -165,6 +167,7 @@ async function main(req,res,youtubeLink,io) {
 
       if (!buffer) {
         console.log("no more 'continuation' tags")
+        await io.emit('ScrollData', `Scroll batches rendered: ${i}`);
         active = false
       }
 
@@ -189,7 +192,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
     let activePop = true
 
     // iterate thru all visible reply buttons
-    if (expander) {
+    if (expander.length) {
       for (let i = 0; i < expander.length; i++) {
 
         /* Sometimes YouTube will have a "YouTube TV" prompt
@@ -242,6 +245,8 @@ If: ('paper-dialog.ytd-popup-container') shows up,
         // res.send({data: 'expanded comment'})
         await res.write('expanded comment')
       }
+    } else {
+      await io.emit('ExpandedCommentData', '0 out of 0 comments expanded');
     }
 
     // need more time to correctly gather up "Show more replies" buttons

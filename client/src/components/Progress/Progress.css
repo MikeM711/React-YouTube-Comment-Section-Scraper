@@ -2,3 +2,6 @@ p.errorMsg {
   color: red;
  }
  
+ div.progress-display p.complete {
+   color: green
+ }
