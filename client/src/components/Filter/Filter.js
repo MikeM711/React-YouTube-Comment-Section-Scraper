@@ -99,7 +99,7 @@ class Filter extends Component {
 
     const disableCreator = userFilterText ? ("disabled") : ("")
     const disableUser = videoCreatorComRep ? ("disabled") : ("")
-    const disableUserText = disableUser === "disabled" ? (" - filter disabled - Video Creator filter is On") : ("")
+    const disableUserText = disableUser === "disabled" ? (" - disabled - Video Creator filter is On") : ("")
 
     return (
       <div className="filter-class">

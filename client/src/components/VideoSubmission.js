@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
+import Form from './Form/Form'
 import Progress from './Progress/Progress'
 import CommentSection from './CommentSection/CommentSection'
 
@@ -15,7 +16,10 @@ class VideoSubmission extends Component {
    ioResShowMoreRep: false, // "Show More Replies" Response Progress
    ioResFindRep: false, // "Find Replies" Progress
    ioErrMsg: false, // Puppeteer errors
-   endpoint: "/" // originally: http://127.0.0.1:5000
+   endpoint: "/", // originally: http://127.0.0.1:5000
+   formActive: true,
+   progressActive: false,
+   resultsActive: false,
  }
 
 componentDidMount() {
@@ -39,36 +43,52 @@ componentDidMount() {
    });
  }
 
- handleSubmit = (e) => {
-   e.preventDefault();
-   console.log('form submitted', this.state.url)
-
-   // Only enter axios if user provides a valid YouTube link beginning
-   if(this.state.url.startsWith("https://www.youtube.com/watch?") || this.state.url.startsWith("https://m.youtube.com/watch?")){
-    //2nd param passes data, the data is attached to the 'post' param - req.body.post
-    axios.post('/youtubeData',{
-      url: this.state.url
+  handleUrlSubmit = (url) => {
+    // event.preventDefault();
+    this.setState({
+      url: url
     })
-      .then(res => {
-        console.log('hit')
-        console.log(res)
-        // put the res.data inside our state, so we can use it in the component
+
+    this.setState((state, props) => ({
+      url: url
+    }), () => {
+
+      // Only enter axios if user provides a valid YouTube link beginning
+      if (this.state.url.startsWith("https://www.youtube.com/watch?") || this.state.url.startsWith("https://m.youtube.com/watch?")) {
+
         this.setState({
-          url: '',
-          // response: res.data
-        });
-      })
-      .catch(err => console.log(err))
-    } else {
-      this.setState({
-        ioErrMsg: 'Error: please provide a valid YouTube URL'
-      })
-    }
+          formActive: false,
+          progressActive: true,
+          ioErrMsg: false,
+        })
+        //2nd param passes data, the data is attached to the 'post' param - req.body.post
+        axios.post('/youtubeData', {
+          url: this.state.url
+        })
+          .then(res => {
+            console.log('hit')
+            console.log(res)
+            // put the res.data inside our state, so we can use it in the component
+            this.setState({
+              url: '',
+              resultsActive: true,
+            });
+          })
+          .catch(err => console.log(err))
+      } else {
+        this.setState({
+          ioErrMsg: 'Error: please provide a valid YouTube URL'
+        })
+      }
+    })
  }
 
  render() {
    const {ioThumbnail, ioTitle, ioResProgressScroll, ioResComExpand,
      ioResShowMoreRep ,ioResFindRep, ioErrMsg} = this.state
+
+     // Component Activation
+     const {formActive, progressActive, resultsActive} = this.state 
 
      let {ioResResult} = this.state // production
      // let ioResResult = JSON.stringify(require('./ResultTest2')) // testing
@@ -82,26 +102,33 @@ componentDidMount() {
          <h2>YouTube Comment Scraper</h2>
        </div>
        <div>
-         <form onSubmit={this.handleSubmit}>
-           {/* 'value' property used to make value = '' after submit, that's it */}
-           <input type="text" onChange={this.handleChange} value={this.state.url} />
-           <button>Submit</button>
-         </form>
 
-         <Progress 
-          Thumbnail = {ioThumbnail}
-          Title = {ioTitle}
-          ProgressScroll = {ioResProgressScroll}
-          ComExpand = {ioResComExpand}
-          ShowMoreRep = {ioResShowMoreRep}
-          FindRep = {ioResFindRep}
-          ErrMsg = {ioErrMsg}
-         />
+         {formActive ? (
+           <Form
+             ioErrMsg={ioErrMsg}
+             UrlSubmit={this.handleUrlSubmit}
+           />
+         ) : (null)}
 
-         <CommentSection 
-          Result = {ioResResult}
-         />
+         {progressActive ? (
+           <Progress
+             Thumbnail={ioThumbnail}
+             Title={ioTitle}
+             ProgressScroll={ioResProgressScroll}
+             ComExpand={ioResComExpand}
+             ShowMoreRep={ioResShowMoreRep}
+             FindRep={ioResFindRep}
+             ErrMsg={ioErrMsg}
+           />
+         ) : (null)}
          
+          {resultsActive ? (
+            <CommentSection
+            Result={ioResResult}
+            />
+          ) : (null)}
+         
+
        </div>
      </div>
    )

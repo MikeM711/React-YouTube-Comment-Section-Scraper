@@ -18,8 +18,6 @@ class Progress extends Component {
           <p>Expanding Comments: {ComExpand}</p>
           <p>"Show More Replies" Buttons: {ShowMoreRep}</p>
           <p>Finding Replies: {FindRep}</p>
-          <p>Video: https://www.youtube.com/watch?v=IHt71N47cc0</p>
-          <p>https://www.youtube.com/watch?v=U1_ZvIVQHuI</p>
           
           <h3>{Title}</h3>
           
