@@ -9,7 +9,7 @@ div.input-field {
 .no-padding-bottom {padding-bottom:0px !important}
 
 label.likes-filter-label {
-    font-size: 14px;
+    font-size: 15px;
     padding-right: 10px
 }
 
@@ -17,16 +17,25 @@ input#likes-filter {
     width: 50px;
 }
 
+div.likes-filter-input {
+    padding-top: 10px
+}
+
 input#word-filter {
     padding-right: 0px
 }
 
 span.word-filter-text {
-    font-size: 14px;
+    font-size: 15px;
     padding-right: 10px
 }
 
 div.row{
     margin: 0px;
     margin-left: -10px
+}
+
+select.date-filter {
+    width: 50%;
+    margin-left: 0px
 }

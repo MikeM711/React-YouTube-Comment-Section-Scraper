@@ -39,6 +39,45 @@ class Filter extends Component {
     }
   }
 
+  handleDateFilter = (event) => {
+    // Get option text
+    const value = event.target.options[event.target.selectedIndex].text
+    if(value === "Last Hour"){
+      const date = ['second', 'minute']
+      this.props.dateFilter(date)
+    }
+
+    if(value === "Today"){
+      const date = ['second', 'minute', 'hour']
+      this.props.dateFilter(date)
+    }
+
+    if(value === "This Week"){
+      const date = ['second', 'minute', 'hour', 'day']
+      this.props.dateFilter(date)
+    }
+
+    if(value ==="This Month"){
+      const date = ['second', 'minute', 'hour', 'day','week']
+      this.props.dateFilter(date)
+    }
+
+    if(value ==="This Month"){
+      const date = ['second', 'minute', 'hour', 'day','week']
+      this.props.dateFilter(date)
+    }
+
+    if(value ==="This Year"){
+      const date = ['second', 'minute', 'hour', 'day', 'week', 'month']
+      this.props.dateFilter(date)
+    }
+
+    if(value === "Comments Made: Lifetime"){
+      const date = ''
+      this.props.dateFilter(date)
+    }
+
+  }
 
   render() {
     // const { Result } = this.props
@@ -65,7 +104,7 @@ class Filter extends Component {
           </p>
 
           <div className="likes-filter-input">
-            <label className="likes-filter-label" htmlFor="likes-filter">Comments that have at least this many likes: </label>
+            <label className="likes-filter-label" htmlFor="likes-filter">Have at least this many likes: </label>
             <input 
               id="likes-filter" 
               type="number" 
@@ -88,7 +127,22 @@ class Filter extends Component {
                 onFocus={() => { this.setState({wordFilterClick: 'active'}) }}
                 onChange={this.handleWordFilterChange}
                 />
-              <label className={"word-filter-label " + wordFilterClick}  htmlFor="word-filter">Comments that contain the following phrase</label>
+              <label className={"word-filter-label " + wordFilterClick}  htmlFor="word-filter">Contains the following phrase</label>
+            </div>
+
+            <div className="input-field-date col s12">
+              <select 
+              defaultValue="0" 
+              className="date-filter browser-default"
+              onChange={this.handleDateFilter}
+              >
+                <option value="0" >Comments Made: Lifetime</option>
+                <option value="1">Last Hour</option>
+                <option value="2">Today</option>
+                <option value="3">This Week</option>
+                <option value="4">This Month</option>
+                <option value="5">This Year</option>
+              </select>
             </div>
           </div>
 

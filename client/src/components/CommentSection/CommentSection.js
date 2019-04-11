@@ -35,6 +35,12 @@ class CommentSection extends Component {
     })
   }
 
+  handleDateFilter = (date) => {
+    this.setState({
+      dateFilter: date,
+    })
+  }
+
   render() {
     const { Result } = this.props
     let JSONresult = JSON.parse(Result)
@@ -75,12 +81,17 @@ class CommentSection extends Component {
           }
         }
 
-        if(dateFilter && display){
-          if(!OPpost.date.includes(dateFilter)){
-            display = false // future: we will continue, no null
-            OPpost.filter = false
-          } else {
-            OPpost.filter = true
+        if (dateFilter && display) {
+          for (let i = 0; i < dateFilter.length; i++) {
+            if (!OPpost.date.includes(dateFilter[i])) {
+              display = false // future: we will continue, no null
+              OPpost.filter = false
+            } else {
+              OPpost.filter = true
+              // if the 2nd item of the array is found in the date, make display 'true'
+              display = true
+              break
+            }
           }
         }
 
@@ -140,13 +151,16 @@ class CommentSection extends Component {
                 }
               }
 
-              if(dateFilter && display){
-                if(!replyPost[i].dateRep.includes(dateFilter)){
-                  display = false // future: we will continue, no null
-                  replyPost[i].filter = false
-                } else {
-                  display = true
-                  replyPost[i].filter = true
+              if (dateFilter && display) {
+                for (let j = 0; j < dateFilter.length; j++) {
+                  if (!replyPost[i].dateRep.includes(dateFilter[j])) {
+                    display = false // future: we will continue, no null
+                    replyPost[i].filter = false
+                  } else {
+                    display = true
+                    replyPost[i].filter = true
+                    break
+                  }
                 }
               }
 
@@ -257,14 +271,8 @@ class CommentSection extends Component {
             creatorFilter = {this.handleCreatorFilter}
             wordFilter = {this.handleWordFilter}
             LikesFilter = {this.handleLikesFilter}
+            dateFilter = {this.handleDateFilter}
           />
-        {/* Filter component 
-          - Have a "filter state"
-          - send "filter" instructions by function out of component
-          - start with a hard-coded filter
-            - ie: comments/replies of isCreator and isCreatorRep = true
-        
-        */}
         <div className="comment-class">
           {comments}
         </div>
