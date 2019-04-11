@@ -5,3 +5,16 @@ p.errorMsg {
  div.progress-display p.complete {
    color: green
  }
+
+ div.progress-class {
+   margin-bottom: 50px
+ }
+
+ div.thumbnail img {
+  width: 30%;
+  height: auto;
+}
+
+div.progress-title {
+  margin-left: 5%
+}

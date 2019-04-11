@@ -14,13 +14,17 @@ class Progress extends Component {
       const completeExpand = ShowMoreRep ? ("complete") : ("incomplete")
       const completeShowMore = ShowMoreRep === '0 "show more replies" buttons visible' ? 
         ("complete") : ("incomplete")
-      const completeFindRep = FindRep === '"Reply Finding" Complete!' ? 
+      const completeFindRep = FindRep === '"Reply Finding" Complete! Scroll down to view results.' ?
         ("complete") : ("incomplete")
 
     return (
       <div className="progress-class">
-        <div>
-          <h2>Progress</h2>
+        <h4>{Title}</h4>
+        <div className="thumbnail">
+          <img src={Thumbnail} alt="" />
+        </div>
+        <div className="progress-title">
+          <h5><b>Progress:</b></h5>
         </div>
         <div className="progress-display">
           <p className="errorMsg">{ErrMsg}</p>
@@ -29,12 +33,6 @@ class Progress extends Component {
           <p className={completeExpand}> <b>Expanding Comments:</b> {ComExpand}</p>
           <p className={completeShowMore}> <b>"Show More Replies" Buttons:</b> {ShowMoreRep}</p>
           <p className={completeFindRep}> <b>Finding Replies:</b> {FindRep}</p>
-          
-          <h3>{Title}</h3>
-          
-        </div>
-        <div className="thumbnail">
-          <img src={Thumbnail} alt=""/>
         </div>
       </div>
     )

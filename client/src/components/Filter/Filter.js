@@ -103,10 +103,12 @@ class Filter extends Component {
 
     return (
       <div className="filter-class">
-        <h2>Filter</h2>
-
+        <div className="filter-title">
+          <h5> <b>Filter:</b> </h5>
+        </div>
+        
         <form action="#" className="filter-form">
-          <p>
+          <div className="creator-filter">
             <label>
               <span className="creator-filter-text">Comments by the Video Creator</span>
               <input
@@ -120,7 +122,7 @@ class Filter extends Component {
                 The span tag includes a space - meaning: you can click a little to the right, and a click will still register */}
               <span>&nbsp;</span>
             </label>
-          </p>
+            </div>
 
           <div className="likes-filter-input">
             <label className="likes-filter-label" htmlFor="likes-filter">Have at least this many likes: </label>

@@ -73,7 +73,6 @@ componentDidMount() {
             // put the res.data inside our state, so we can use it in the component
             this.setState({
               url: '',
-              resultsActive: true,
             });
           })
           .catch(err => console.log(err))
@@ -92,10 +91,13 @@ componentDidMount() {
      // Component Activation
      let {formActive, progressActive, resultsActive} = this.state 
 
-     let {ioResResult} = this.state // production
-     // let ioResResult = JSON.stringify(require('./ResultTest2')) // testing
-     // resultsActive = true // testing
-     // progressActive = true // testing
+     // display Comment Section component (our results) when socket emits the below message:
+     resultsActive = ioResFindRep === '"Reply Finding" Complete! Scroll down to view results.' ? (true) : (false)
+
+    let {ioResResult} = this.state // production
+    //  let ioResResult = JSON.stringify(require('./ResultTest2')) // testing
+    //  resultsActive = true // testing
+    //  progressActive = true // testing
 
      // If there is no "ioResResult", make the variable 'false'
      ioResResult = ioResResult ? (ioResResult) : (false)
@@ -103,7 +105,7 @@ componentDidMount() {
    return (
      <div className="app container">
        <div>
-         <h2>YouTube Comment Scraper</h2>
+         <h2 className="blue-text">YouTube Comment Scraper</h2>
        </div>
        <div>
 

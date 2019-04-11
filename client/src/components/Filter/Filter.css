@@ -1,5 +1,14 @@
+div.filter-title {
+    margin-left:5%
+}
+
+div.creator-filter {
+    margin-top:20px;
+    margin-bottom:10px;
+}
+
 form.filter-form {
-    padding-left: 5%
+    padding-left: 0%
 }
 
 div.input-field {

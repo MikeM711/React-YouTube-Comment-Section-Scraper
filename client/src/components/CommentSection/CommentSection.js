@@ -115,9 +115,6 @@ class CommentSection extends Component {
 
     return (
       <div className="progress-class">
-        <div>
-          <h2>Result</h2>
-        </div>
           <Filter 
             creatorFilter = {this.handleCreatorFilter}
             wordFilter = {this.handleWordFilter}
@@ -126,7 +123,8 @@ class CommentSection extends Component {
             nameFilter = {this.handleNameFilter}
           />
         <div className="comment-class">
-          {comments}
+          <h3 className="center blue-text"> Comment Section </h3>
+            {comments}
         </div>
       </div>
     )

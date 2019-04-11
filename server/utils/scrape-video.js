@@ -383,7 +383,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
 
       const likeHandlerStr = 'div#body div#main span#vote-count-left'
 
-      const isCreatorHandlerStr = 'div#body div#main div#header div#header-author span#author-comment-badge ytd-author-comment-badge-renderer'
+      const isCreatorHandlerStr = 'div#body div#main div#header div#header-author span#author-comment-badge ytd-author-comment-badge-renderer.creator'
 
       // Element handle that holds the comment
       // Note to self: await turns elementHandler from pending => usable value
@@ -551,7 +551,7 @@ If: ('paper-dialog.ytd-popup-container') shows up,
 
     }
 
-    await io.emit('FindRepliesData', '"Reply Finding" Complete!');
+    await io.emit('FindRepliesData', '"Reply Finding" Complete! Scroll down to view results.');
     const myJSON = JSON.stringify(CommentSection,null,2);
 
     // console.log(myJSON)
