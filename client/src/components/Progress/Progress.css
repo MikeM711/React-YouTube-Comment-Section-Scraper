@@ -6,6 +6,10 @@ p.errorMsg {
    color: green
  }
 
+ div.progress-title h5.complete {
+   color: green
+ }
+
  div.progress-class {
    margin-bottom: 50px
  }

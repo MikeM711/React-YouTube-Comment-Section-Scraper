@@ -16,6 +16,7 @@ class Progress extends Component {
         ("complete") : ("incomplete")
       const completeFindRep = FindRep === '"Reply Finding" Complete! Scroll down to view results.' ?
         ("complete") : ("incomplete")
+      const completeProgress = completeFindRep === "complete" ? ('Completed') : (null)
 
     return (
       <div className="progress-class">
@@ -24,7 +25,7 @@ class Progress extends Component {
           <img src={Thumbnail} alt="" />
         </div>
         <div className="progress-title">
-          <h5><b>Progress:</b></h5>
+          <h5 className={completeFindRep} ><b>Progress: {completeProgress}</b></h5>
         </div>
         <div className="progress-display">
           <p className="errorMsg">{ErrMsg}</p>

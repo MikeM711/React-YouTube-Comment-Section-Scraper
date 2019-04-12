@@ -72,7 +72,24 @@ async function main(req,res,youtubeLink,io) {
 
     // send YouTube title to frontend
 
+    // Handles error where Chromium does not recognize a YouTube video format
+    const videoError = await page.$('div.ytp-error-content-wrap')
+
+    if(videoError){
+      await io.emit('ErrorMsg', "Error: This YouTube video uses a video format that is unrecognizable by this application's browser. Please try another video.");
+      browser.close()
+      res.end()
+    }
+
+    const videoUnavailable = await page.$('div.yt-player-error-message-renderer')
+    if(videoUnavailable){
+      await io.emit('ErrorMsg', `Error encountered in the backend. Check to make sure your URL, "${youtubeLink}", exists and try again.`);
+      browser.close()
+      res.end()
+    }
+
     const titleSelect = 'h1.title yt-formatted-string.ytd-video-primary-info-renderer'
+    
 
     await page.waitForSelector(titleSelect)
     const titleSelelctHandle = await page.$(titleSelect)

@@ -104,7 +104,7 @@ class Filter extends Component {
     return (
       <div className="filter-class">
         <div className="filter-title">
-          <h5> <b>Filter:</b> </h5>
+          <h5> <b>Comment Filter:</b> </h5>
         </div>
         
         <form action="#" className="filter-form">
@@ -189,9 +189,6 @@ class Filter extends Component {
        
 
         </form>
-
-        <br></br>
-        <br></br>
 
       </div>
     )

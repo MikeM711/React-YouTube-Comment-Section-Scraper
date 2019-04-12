@@ -1,3 +1,7 @@
+div.filter-class {
+    margin-top: -20px
+}
+
 div.filter-title {
     margin-left:5%
 }
@@ -63,3 +67,21 @@ select.date-filter {
     top: 0px;
     z-index: 0;
 }
+
+@media only screen and (max-width: 600px) {
+    span.creator-filter-text {
+        font-size: 12px;
+    }
+
+    label.likes-filter-label {
+        font-size: 12px;
+    }
+
+    .input-field.col label {
+        font-size: 12px;
+    }
+
+    select.date-filter {
+        font-size: 12px;
+    }
+  }

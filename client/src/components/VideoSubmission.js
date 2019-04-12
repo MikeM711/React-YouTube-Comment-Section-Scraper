@@ -78,7 +78,7 @@ componentDidMount() {
           .catch(err => console.log(err))
       } else {
         this.setState({
-          ioErrMsg: 'Error: please provide a valid YouTube URL'
+          ioErrMsg: 'Error: Please provide a valid YouTube video URL'
         })
       }
     })
