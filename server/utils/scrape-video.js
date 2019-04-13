@@ -1,10 +1,9 @@
 const puppeteer = require('puppeteer');
 
-
-async function main(req,res,youtubeLink,io) {
+async function main(req, res, youtubeLink, io) {
 
   try {
-    
+
     // launch puppeteer
     const browser = await puppeteer.launch({
       // headless: false,
@@ -38,8 +37,8 @@ async function main(req,res,youtubeLink,io) {
     // A second check to make sure the YouTube URL exists
     const videoUnavailable = await page.$('div.yt-player-error-message-renderer')
 
-    if(videoUnavailable || validLink){
-      await io.emit('ErrorMsg', `Error encountered in the backend. Check to make sure your URL, "${youtubeLink}", exists and try again.`);
+    if (videoUnavailable || validLink) {
+      await io.emit('ErrorMsg', `Backend Error: Check to make sure your URL, "${youtubeLink}", exists and try again.`);
       browser.close()
       res.end()
     }
@@ -50,7 +49,7 @@ async function main(req,res,youtubeLink,io) {
     // Handles error where Chromium does not recognize a YouTube video format
     const videoError = await page.$('div.ytp-error-content-wrap')
 
-    if(videoError){
+    if (videoError) {
       await io.emit('ErrorMsg', "Error: This YouTube video uses a video format that is unrecognizable by this application's browser. Please try another video.");
       browser.close()
       res.end()
@@ -70,7 +69,7 @@ async function main(req,res,youtubeLink,io) {
     const videoId = await page.$eval(videoSelect, view => view.getAttribute('video-id'))
 
     const Thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
-    
+
     await io.emit('Thumbnail', Thumbnail);
 
     // Update progress on the frontend
@@ -80,7 +79,7 @@ async function main(req,res,youtubeLink,io) {
     // Scroll function to render out all comment threads
     async function scrollFunc(int) {
       await page.evaluate(async (int) => {
-        await new Promise((resolve, reject,) => {
+        await new Promise((resolve, reject, ) => {
           try {
             const maxScroll = Number.MAX_SAFE_INTEGER;
             let lastScroll = 0;
@@ -101,7 +100,7 @@ async function main(req,res,youtubeLink,io) {
             reject(err.toString());
           }
         });
-      },int);
+      }, int);
     }
 
     // Scroll all the way down
@@ -117,15 +116,15 @@ async function main(req,res,youtubeLink,io) {
 
     // count the amount of youtube comments
     const commentNumHandle = await page.$("yt-formatted-string.count-text")
-    let commentNumber = await page.evaluate( num => num.innerText, commentNumHandle)
-    
+    let commentNumber = await page.evaluate(num => num.innerText, commentNumHandle)
+
     // Convert the number of comments into a JS number
-    commentNumber = Number(commentNumber.replace(" Comments", "").replace(",",""))
+    commentNumber = Number(commentNumber.replace(" Comments", "").replace(",", ""))
     console.log(commentNumber)
 
     // Do not allow program to continue, if YouTube finds 2000+ comments
-    if(commentNumber >= 2000){
-      await io.emit('ErrorMsg', `Error encountered: The video "${titleName}" has too many comments (${commentNumber} Comments). Heroku will exceed its memory quota if it continues. Choose another YouTube video with less than 2,000 comments.`);
+    if (commentNumber >= 2000) {
+      await io.emit('ErrorMsg', `Error: The video "${titleName}" has too many comments (${commentNumber} Comments). Heroku will exceed its memory quota if it continues. Choose another YouTube video with less than 2,000 comments.`);
       browser.close()
       res.end()
     }
@@ -160,9 +159,9 @@ async function main(req,res,youtubeLink,io) {
       let afterCommentHanlder = await page.$$(commentsStr)
 
       // If exectuion enters here, the scroll has rendered comments
-      if(preCommentHanlder.length < afterCommentHanlder.length){
+      if (preCommentHanlder.length < afterCommentHanlder.length) {
         i++
-        console.log('more comments loaded!',i)
+        console.log('more comments loaded!', i)
         await io.emit('ScrollData', `Scroll batches rendered: ${i}`);
         await res.write('more comments loaded')
       }
@@ -194,7 +193,7 @@ async function main(req,res,youtubeLink,io) {
           We need to exit it in order to access the buttons at the bottom of the screen
           Note: popup does not go away in the HTML once it has been clicked
         */
-       
+
         // Check to see if popup selector exists
         const popup = await page.$('paper-dialog.ytd-popup-container')
         if (activePop && popup) {
@@ -211,19 +210,19 @@ async function main(req,res,youtubeLink,io) {
 
         // click that "View # replies" button
         await showMore.click()
-        
+
         // Find all replies after we click "View # replies" button
         let clickedReplies = await expander[i].$$('ytd-comment-renderer.ytd-comment-replies-renderer')
 
         /* Note: If we click too many buttons, too fast - the program will mis-click
           To slow the program down, we will keep the exeuction in a while-loop until a reply renders out */
-        while(clickedReplies == 0){
+        while (clickedReplies == 0) {
           clickedReplies = await expander[i].$$('ytd-comment-renderer.ytd-comment-replies-renderer')
         }
 
         // replies have been rendered out, execution will continue
         await page.waitFor(100); // some "breathing time" for execution after render
-        
+
         // await console.log('spinner disappeared')
         await console.log(`${i + 1} " out of " ${expander.length} "comments"`)
 
@@ -287,7 +286,7 @@ async function main(req,res,youtubeLink,io) {
           }
 
           // If one less "Show More Reply" button is found, compared to pre-button click, allow execution to move on
-          if (afterTotMoreRep.length == preTotMoreRep.length - 1){
+          if (afterTotMoreRep.length == preTotMoreRep.length - 1) {
             renderActive = false;
             // If problems, add a delay here
           }
@@ -327,7 +326,7 @@ async function main(req,res,youtubeLink,io) {
 
     // Element handler of all comments
     const allComments = await page.$$('yt-formatted-string#content-text')
-    console.log("We have found: ", allComments.length , "comments")
+    console.log("We have found: ", allComments.length, "comments")
 
     // The 'CommentSection' that will store all the data we need for the frontend
     let CommentSection = []
@@ -336,7 +335,7 @@ async function main(req,res,youtubeLink,io) {
     const allOPCommentContainers = await page.$$('ytd-comment-thread-renderer.ytd-item-section-renderer')
 
     // Iterate through each thread "container"
-    for(let i = 0; i < allOPCommentContainers.length; i++){
+    for (let i = 0; i < allOPCommentContainers.length; i++) {
 
       // Every selector below will be relative to each thread "container"
       // The selector for the first comment of every thread (a space in the string is required)
@@ -366,41 +365,41 @@ async function main(req,res,youtubeLink,io) {
       const commentHandler = await allOPCommentContainers[i].$(commentThreadStr + commentHandlerStr)
 
       // Evaluating the comment text
-      const comment = await page.evaluate( singleComment => singleComment.innerText ,commentHandler)
+      const comment = await page.evaluate(singleComment => singleComment.innerText, commentHandler)
 
       // Avatar image Element Handle
       const imgHandler = await allOPCommentContainers[i].$(commentThreadStr + imgHandlerStr)
 
       // Evaluating the avatar image
-      const avatar = await imgHandler.$eval('img#img',imgSelector => imgSelector.src)     
+      const avatar = await imgHandler.$eval('img#img', imgSelector => imgSelector.src)
 
       // Element handle that holds the name of initial commenter
       const nameHandler = await allOPCommentContainers[i].$(commentThreadStr + nameHandlerStr)
 
       // Name of initial commenter
-      let name = await page.evaluate( name => name.innerText,nameHandler)
+      let name = await page.evaluate(name => name.innerText, nameHandler)
       name = name.trim()
 
       // Element handle that holds the date and link of comment
       const dateLinkHandler = await allOPCommentContainers[i].$(commentThreadStr + dateLinkHandlerStr)
-      
+
       // Evaluating date of post - shows edit, if any
-      const date = await page.evaluate( singleDate => singleDate.innerText ,dateLinkHandler)
+      const date = await page.evaluate(singleDate => singleDate.innerText, dateLinkHandler)
 
       // Element handle that holds the likes
       const likeHandler = await allOPCommentContainers[i].$(commentThreadStr + likeHandlerStr)
 
       // Evaluating likes
-      let likes = await page.evaluate( likeAmt => likeAmt.innerText ,likeHandler)
+      let likes = await page.evaluate(likeAmt => likeAmt.innerText, likeHandler)
       likes = likes.trim()
 
       // link to particular comment (context)
-      const link = await page.evaluate( link => link.href ,dateLinkHandler) 
-      
+      const link = await page.evaluate(link => link.href, dateLinkHandler)
+
       // check if original thread creator made this particular post
       const isCreatorHandler = await allOPCommentContainers[i].$(commentThreadStr + isCreatorHandlerStr)
 
-      if(isCreatorHandler){
+      if (isCreatorHandler) {
         var isCreator = true
       } else {
         var isCreator = false
@@ -410,12 +409,12 @@ async function main(req,res,youtubeLink,io) {
 
       const hasReplies = await allOPCommentContainers[i].$$('div#replies ytd-comment-replies-renderer ytd-expander div#content div div#loaded-replies ytd-comment-renderer')
 
-      if(hasReplies.length > 0){
+      if (hasReplies.length > 0) {
 
-        console.log('Replies found for',(i+1))
+        console.log('Replies found for', (i + 1))
 
         // Send progress data to the frontend
-        io.emit('FindRepliesData', `Replies found for Post #${(i+1)}`);
+        io.emit('FindRepliesData', `Replies found for Post #${(i + 1)}`);
 
         // 'replies' array needs access to data from inside the following 'for loop' block scope
         var replies = []
@@ -435,36 +434,36 @@ async function main(req,res,youtubeLink,io) {
           const imgHandlerRep = await hasReplies[i].$(replyThreadStr + imgHandlerStr)
 
           // Avatar image of replier
-          const avatarRep = await imgHandlerRep.$eval('img#img',imgSelector => imgSelector.src)
+          const avatarRep = await imgHandlerRep.$eval('img#img', imgSelector => imgSelector.src)
 
           // Element handle that holds the name of a replier
           const nameHandlerRep = await hasReplies[i].$(replyThreadStr + nameHandlerStr)
 
           // Name of the replier
-          let nameRep = await page.evaluate( name => name.innerText,nameHandlerRep)
+          let nameRep = await page.evaluate(name => name.innerText, nameHandlerRep)
           nameRep = nameRep.trim()
 
           // Element handle that holds the date and link of replier
           const dateLinkHandlerRep = await hasReplies[i].$(replyThreadStr + dateLinkHandlerStr)
-      
+
           // Date of post evaluated - shows edit if any - for replier
-          const dateRep = await page.evaluate( singleDate => singleDate.innerText ,dateLinkHandlerRep)
+          const dateRep = await page.evaluate(singleDate => singleDate.innerText, dateLinkHandlerRep)
 
           // Element handle that holds the likes of replier
           const likeHandlerRep = await hasReplies[i].$(replyThreadStr + likeHandlerStr)
 
           // Evaluating likes of replier
-          let likesRep = await page.evaluate( likeAmt => likeAmt.innerText ,likeHandlerRep)
+          let likesRep = await page.evaluate(likeAmt => likeAmt.innerText, likeHandlerRep)
           likesRep = likesRep.trim()
 
           // link to particular replier (context)
-          const linkRep = await page.evaluate( link => link.href ,dateLinkHandlerRep)
+          const linkRep = await page.evaluate(link => link.href, dateLinkHandlerRep)
 
           // check if original thread creator made this reply
           const isCreatorHandlerRep = await hasReplies[i].$(replyThreadStr + isCreatorHandlerStr)
 
           // Find if this reply was made by the video creator
-          if(isCreatorHandlerRep){
+          if (isCreatorHandlerRep) {
             var isCreatorRep = true
           } else {
             var isCreatorRep = false
@@ -491,10 +490,10 @@ async function main(req,res,youtubeLink,io) {
         // heartbeat message over the connection
         await res.write('finding replies')
 
-        console.log('No replies found for', (i+1))
+        console.log('No replies found for', (i + 1))
 
         // Send progress to the frontend
-        io.emit('FindRepliesData', `No replies found for Post #${(i+1)}`);
+        io.emit('FindRepliesData', `No replies found for Post #${(i + 1)}`);
         var replies = false
       }
 
@@ -521,15 +520,15 @@ async function main(req,res,youtubeLink,io) {
 
     await io.emit('FindRepliesData', '"Reply Finding" Complete! Scroll down to view results.');
 
-    // Send data payload to the frontend
-    const myJSON = JSON.stringify(CommentSection,null,2);
+    // Data payload
+    const myJSON = JSON.stringify(CommentSection, null, 2);
 
     console.log('End of puppeteer')
     browser.close()
 
-    // return back to the route
+    // return back to the route with payload
     return myJSON
-    
+
   } catch (error) {
     console.log("our error", error)
 
@@ -542,12 +541,12 @@ async function main(req,res,youtubeLink,io) {
     const EvalErr = `Error: Evaluation failed`
 
     // If any of these errors occurred, send the below string to the frontend
-    if(error == navErr || error == nullErr || error.startsWith(EvalErr)){
-      await io.emit('ErrorMsg', `Error encountered: Check to make sure your URL, "${youtubeLink}", exists and try again.`);
-    } else{
+    if (error == navErr || error == nullErr || error.startsWith(EvalErr)) {
+      await io.emit('ErrorMsg', `Backend Error: Check to make sure your URL, "${youtubeLink}", exists and try again.`);
+    } else {
       await io.emit('ErrorMsg', `${error}`);
     }
-    
+
   }
 
 };
