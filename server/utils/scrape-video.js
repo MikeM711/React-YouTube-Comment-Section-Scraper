@@ -261,7 +261,7 @@ async function main(req, res, youtubeLink, io) {
         let preTotMoreRep = await page.$$('yt-formatted-string.yt-next-continuation')
 
         // clicking the single "Show more replies" button
-        singleMoreRep.click()
+        await singleMoreRep.click()
 
         renderActive = true;
 
