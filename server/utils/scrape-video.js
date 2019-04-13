@@ -112,6 +112,21 @@ async function main(req,res,youtubeLink,io) {
     });
     await page.waitForSelector('yt-formatted-string.count-text')
 
+    // count the amount of youtube comments
+    const commentNumHandle = await page.$("yt-formatted-string.count-text")
+    let commentNumber = await page.evaluate( num => num.innerText, commentNumHandle)
+    
+    // Convert the number of comments into a JS number
+    commentNumber = Number(commentNumber.replace(" Comments", "").replace(",",""))
+    console.log(commentNumber)
+
+    // Do not allow program to continue, if YouTube finds 2000+ comments
+    if(commentNumber >= 2000){
+      await io.emit('ErrorMsg', `Error encountered: The video "${titleName}" has too many comments (${commentNumber} Comments). Heroku will exceed its memory quota if it continues. Choose another YouTube video with less than 2,000 comments.`);
+      browser.close()
+      res.end()
+    }
+
     // Fix the "Stopping on scroll" problem, wait for page to render out "next continuation" HTML
     await page.waitForSelector('yt-next-continuation.ytd-item-section-renderer')
 
@@ -516,6 +531,8 @@ async function main(req,res,youtubeLink,io) {
     console.log("our error", error)
 
     // If execution lands here, these are the most common errors I've seen
+
+    browser.close()
 
     const navErr = "Error: Protocol error (Page.navigate): Cannot navigate to invalid URL"
     const nullErr = `TypeError: Cannot read property 'click' of null`

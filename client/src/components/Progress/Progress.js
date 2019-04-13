@@ -7,7 +7,8 @@ class Progress extends Component {
     const { ProgressScroll, ComExpand, ShowMoreRep, FindRep, 
       ErrMsg, Thumbnail, Title, VideoFound } = this.props
 
-      const findingVideo = VideoFound ? ('Video Found!') : ('Searching...')
+      let findingVideo = VideoFound ? ('Video Found!') : ('Searching...')
+      findingVideo = !VideoFound && ErrMsg ? ('Video Not Found') : (findingVideo)
 
       const completeFindVideo = VideoFound ? ("complete") : ("incomplete")
       const completeScroll = ComExpand ? ("complete") : ("incomplete")

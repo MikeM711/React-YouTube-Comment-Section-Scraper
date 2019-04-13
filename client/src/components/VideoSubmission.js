@@ -18,25 +18,32 @@ class VideoSubmission extends Component {
    ioResFindRep: false, // "Find Replies" Progress
    ioErrMsg: false, // Puppeteer errors
    endpoint: "/", // originally: http://127.0.0.1:5000
-   formActive: true,
    progressActive: false,
    resultsActive: false,
  }
 
-componentDidMount() {
+  componentDidMount() {
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
 
     socket.on("Title", data => this.setState({ ioTitle: data }));
     socket.on("VideoFound", data => this.setState({ ioVideoFound: data }));
     socket.on("Thumbnail", data => this.setState({ ioThumbnail: data }));
-    socket.on("ScrollData", data => this.setState({ioResProgressScroll: data}))
-    socket.on("ExpandedCommentData", data => this.setState({ioResComExpand: data}))
-    socket.on("ShowMoreRepData", data => this.setState({ioResShowMoreRep: data}))
-    socket.on("FindRepliesData", data => this.setState({ioResFindRep: data}))
+    socket.on("ScrollData", data => this.setState({ ioResProgressScroll: data }))
+    socket.on("ExpandedCommentData", data => this.setState({ ioResComExpand: data }))
+    socket.on("ShowMoreRepData", data => this.setState({ ioResShowMoreRep: data }))
+    socket.on("FindRepliesData", data => this.setState({ ioResFindRep: data }))
     socket.on("ResultData", data => this.setState({ ioResResult: data }));
-    socket.on("ErrorMsg", data => this.setState({ioErrMsg: data}))
+    socket.on("ErrorMsg", data => this.setState({ ioErrMsg: data }))
+  }
+
+  componentWillUpdate() {
+    if(!this.state.progressActive){
+      this.setState({
+        progressActive: true
+      })
     }
+  }
 
  // Listens to every change of value in input field
  handleChange = (e) => {
@@ -70,10 +77,6 @@ componentDidMount() {
           .then(res => {
             console.log('hit')
             console.log(res)
-            // put the res.data inside our state, so we can use it in the component
-            this.setState({
-              url: '',
-            });
           })
           .catch(err => console.log(err))
       } else {
@@ -89,7 +92,7 @@ componentDidMount() {
      ioResShowMoreRep ,ioResFindRep, ioErrMsg} = this.state
 
      // Component Activation
-     let {formActive, progressActive, resultsActive} = this.state 
+     let {progressActive, resultsActive} = this.state 
 
      // display Comment Section component (our results) when socket emits the below message:
      resultsActive = ioResFindRep === '"Reply Finding" Complete! Scroll down to view results.' ? (true) : (false)
@@ -100,7 +103,7 @@ componentDidMount() {
     //  progressActive = true // testing
 
      // If there is no "ioResResult", make the variable 'false'
-     ioResResult = ioResResult ? (ioResResult) : (false)
+     ioResResult = ioResResult ? (ioResResult) : (false)   
 
    return (
      <div className="app container">
@@ -109,12 +112,11 @@ componentDidMount() {
        </div>
        <div>
 
-         {formActive ? (
-           <Form
-             ioErrMsg={ioErrMsg}
-             UrlSubmit={this.handleUrlSubmit}
-           />
-         ) : (null)}
+         <Form
+           ioErrMsg={ioErrMsg}
+           UrlSubmit={this.handleUrlSubmit}
+           progressActive={progressActive}
+         />
 
          {progressActive ? (
            <Progress
@@ -128,13 +130,12 @@ componentDidMount() {
              ErrMsg={ioErrMsg}
            />
          ) : (null)}
-         
-          {resultsActive ? (
-            <CommentSection
-            Result={ioResResult}
-            />
-          ) : (null)}
-         
+
+         {resultsActive ? (
+           <CommentSection
+             Result={ioResResult}
+           />
+         ) : (null)}
 
        </div>
      </div>

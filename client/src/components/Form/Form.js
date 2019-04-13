@@ -4,14 +4,7 @@ class Form extends Component {
  state = {
    url:'',
    ioThumbnail: '',
-  //  ioTitle: '',
-  //  ioResResult: false, // Result Response
-  //  ioResProgressScroll: false, // Scroll Progress
-  //  ioResComExpand: false, // "Comments Expaned" Response Progress
-  //  ioResShowMoreRep: false, // "Show More Replies" Response Progress
-  //  ioResFindRep: false, // "Find Replies" Progress
-  //  ioErrMsg: false, // Puppeteer errors
-  //  endpoint: "/" // originally: http://127.0.0.1:5000
+   inputDisable: '',
  }
 
  // Listens to every change of value in input field
@@ -26,7 +19,7 @@ class Form extends Component {
    console.log('form submitted', this.state.url)
    this.props.UrlSubmit(this.state.url)
    this.setState({
-     url: ''
+    inputDisable: true
    })
  }
 
@@ -38,27 +31,33 @@ class Form extends Component {
 
  render() {
 
-  const {ioErrMsg} = this.props
+  const {progressActive} = this.props
 
    return (
      <div className="form">
        <div className="url-form" >
          <form onSubmit={this.handleSubmit}>
-           {/* 'value' property used to make value = '' after submit, that's it */}
-           <input type="text" onChange={this.handleChange} value={this.state.url} />
-           <p className="errorMsg">{ioErrMsg}</p>
-           <button className="waves-effect waves-light btn #42a5f5 blue lighten-1">Submit</button>
+           <input 
+            type="text" 
+            onChange={this.handleChange} 
+            value={this.state.url} 
+            disabled={progressActive}
+            placeholder= "Enter YouTube video URL here (2,000 comments maximum)"
+            />
+           <button 
+            className="waves-effect waves-light btn #42a5f5 blue lighten-1" 
+            disabled={progressActive}
+            >Submit</button>
          </form>
          <br></br>
 
          <button
          className="waves-effect waves-light btn #90caf9 blue lighten-3" 
-         onClick={this.handleTestVideo}>Click For An Example URL</button>
-         
-         
+         onClick={this.handleTestVideo}
+         disabled={progressActive}
+         >Click For An Example URL</button>
        </div>
-        <p>Video: https://www.youtube.com/watch?v=IHt71N47cc0</p>
-        <p>https://www.youtube.com/watch?v=U1_ZvIVQHuI</p>
+
      </div>
    )
   }
