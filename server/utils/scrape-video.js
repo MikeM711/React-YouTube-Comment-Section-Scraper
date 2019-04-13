@@ -32,6 +32,15 @@ async function main(req,res,youtubeLink,io) {
     // Get the video element
     const videoBtn = await page.$('video.video-stream')
 
+    // A second check to make sure the YouTube URL exists
+    const videoUnavailable = await page.$('div.yt-player-error-message-renderer')
+
+    if(videoUnavailable){
+      await io.emit('ErrorMsg', `Error encountered in the backend. Check to make sure your URL, "${youtubeLink}", exists and try again.`);
+      browser.close()
+      res.end()
+    }
+
     // stop the video
     await videoBtn.click()
 
@@ -40,15 +49,6 @@ async function main(req,res,youtubeLink,io) {
 
     if(videoError){
       await io.emit('ErrorMsg', "Error: This YouTube video uses a video format that is unrecognizable by this application's browser. Please try another video.");
-      browser.close()
-      res.end()
-    }
-
-    // A second check to make sure the YouTube URL exists
-    const videoUnavailable = await page.$('div.yt-player-error-message-renderer')
-
-    if(videoUnavailable){
-      await io.emit('ErrorMsg', `Error encountered in the backend. Check to make sure your URL, "${youtubeLink}", exists and try again.`);
       browser.close()
       res.end()
     }
