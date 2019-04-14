@@ -112,9 +112,18 @@ async function main(req, res, youtubeLink, io) {
     await page.evaluate(() => {
       window.scrollBy(0, 400);
     });
-    await page.waitForSelector('yt-formatted-string.count-text', {timeout: 60000})
+
+    // If comments are disabled, exit out of the process
+    const disabledCom = await page.$('yt-formatted-string#message')
+    if(disabledCom){
+      await io.emit('ErrorMsg', `Error: The video "${titleName}" has its comments disabled. Choose another YouTube video that does not have its comments disabled.`);
+      browser.close()
+      res.end()
+    }
 
     // count the amount of youtube comments
+    await page.waitForSelector('yt-formatted-string.count-text', {timeout: 60000})
+
     const commentNumHandle = await page.$("yt-formatted-string.count-text")
     let commentNumber = await page.evaluate(num => num.innerText, commentNumHandle)
 
