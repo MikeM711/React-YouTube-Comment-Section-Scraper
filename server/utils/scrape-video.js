@@ -124,7 +124,7 @@ async function main(req, res, youtubeLink, io) {
 
     // Do not allow program to continue, if YouTube finds 2000+ comments
     if (commentNumber >= 2000) {
-      await io.emit('ErrorMsg', `Error: The video "${titleName}" has too many comments (${commentNumber} Comments). Heroku will exceed its memory quota if it continues. Choose another YouTube video with less than 2,000 comments.`);
+      await io.emit('ErrorMsg', `Error: The video "${titleName}" has too many comments (YouTube detects ${commentNumber} Comments). Choose another YouTube video with less than 2,000 comments.`);
       browser.close()
       res.end()
     }
@@ -304,6 +304,7 @@ async function main(req, res, youtubeLink, io) {
         showMoreRep = await page.$$('yt-formatted-string.yt-next-continuation')
 
         console.log(`${showMoreRep.length} "show more replies" buttons visible`)
+        await page.waitFor(200); // more breathing time
 
         // Update progress on the frontend
         await io.emit('ShowMoreRepData', `${showMoreRep.length} "show more replies" buttons visible`);

@@ -37,7 +37,18 @@ module.exports = function filterfunction(JSONresult, videoCreatorComRep, wordFil
 
     // If likes filter is on, should we display this post?
     if (likesFilter && display) {
-      if (OPpost.likes < likesFilter) {
+      var OPlikes = OPpost.likes
+
+      // For OP posts that have over 1,000 likes (ex: 1K or 1.2K), correctly display number form
+      if (OPlikes.includes('K')) {
+        if (OPlikes.includes('.')) {
+          OPlikes = Number(OPlikes.replace('.', '').replace('K', '00'))
+        } else {
+          OPlikes = Number(OPlikes.replace('K', '000'))
+        }
+      }
+
+      if (OPlikes < likesFilter) {
         display = false
         OPpost.filter = false
       } else {
@@ -63,7 +74,7 @@ module.exports = function filterfunction(JSONresult, videoCreatorComRep, wordFil
     // If name filter is on, should we display this post?
     if (nameFilter && display) {
       if (OPpost.name.toLowerCase() !== nameFilter.trim()) {
-        display = false 
+        display = false
         OPpost.filter = false
       } else {
         OPpost.filter = true
@@ -96,7 +107,7 @@ module.exports = function filterfunction(JSONresult, videoCreatorComRep, wordFil
           display = true
           if (videoCreatorComRep) {
             if (!replyPost[i].isCreatorRep) {
-              display = false 
+              display = false
               replyPost[i].filter = false
             } else {
               display = true
@@ -115,7 +126,19 @@ module.exports = function filterfunction(JSONresult, videoCreatorComRep, wordFil
           }
 
           if (likesFilter && display) {
-            if (replyPost[i].likesRep < likesFilter) {
+
+            var repLikes = replyPost[i].likesRep
+
+            // // For replies that have over 1,000 likes (ex: 1K or 1.2K), correctly display number form
+            if (repLikes.includes('K')) {
+              if (repLikes.includes('.')) {
+                repLikes = Number(repLikes.replace('.', '').replace('K', '00'))
+              } else {
+                repLikes = Number(repLikes.replace('K', '000'))
+              }
+            }
+
+            if (repLikes < likesFilter) {
               display = false
               replyPost[i].filter = false
             } else {
