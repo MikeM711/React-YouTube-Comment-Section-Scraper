@@ -4,7 +4,7 @@ import './Filter.css'
 class Filter extends Component {
   state = {
     videoCreatorComRep: false,
-    wordFilterClick:'',
+    wordFilterClick: '',
     wordFilterText: false,
     likesFilterNum: '',
     userFilterClick: '',
@@ -12,16 +12,16 @@ class Filter extends Component {
   }
 
   handleVideoCreator = () => {
-    this.setState((state,props) => ({
+    this.setState((state, props) => ({
       videoCreatorComRep: !state.videoCreatorComRep
     }), () => {
-      this.props.creatorFilter(this.state.videoCreatorComRep) 
+      this.props.creatorFilter(this.state.videoCreatorComRep)
     })
   }
 
   handleWordFilterChange = (event) => {
     const value = event.target.value.toLowerCase()
-    this.setState((state,props) => ({
+    this.setState((state, props) => ({
       wordFilterText: value
     }), () => {
       this.props.wordFilter(value)
@@ -31,7 +31,7 @@ class Filter extends Component {
   handleUserFilterChange = (event) => {
     // make sure that all username checks are rendered toLowerCase()
     const value = event.target.value.toLowerCase()
-    this.setState((state,props) => ({
+    this.setState((state, props) => ({
       userFilterText: value
     }), () => {
       this.props.nameFilter(value)
@@ -51,39 +51,38 @@ class Filter extends Component {
   }
 
   handleDateFilter = (event) => {
-    // Get option text
     const value = event.target.options[event.target.selectedIndex].text
-    if(value === "Last Hour"){
+    if (value === "Last Hour") {
       const date = ['second', 'minute']
       this.props.dateFilter(date)
     }
 
-    if(value === "Today"){
+    if (value === "Today") {
       const date = ['second', 'minute', 'hour']
       this.props.dateFilter(date)
     }
 
-    if(value === "This Week"){
+    if (value === "This Week") {
       const date = ['second', 'minute', 'hour', 'day']
       this.props.dateFilter(date)
     }
 
-    if(value ==="This Month"){
-      const date = ['second', 'minute', 'hour', 'day','week']
+    if (value === "This Month") {
+      const date = ['second', 'minute', 'hour', 'day', 'week']
       this.props.dateFilter(date)
     }
 
-    if(value ==="This Month"){
-      const date = ['second', 'minute', 'hour', 'day','week']
+    if (value === "This Month") {
+      const date = ['second', 'minute', 'hour', 'day', 'week']
       this.props.dateFilter(date)
     }
 
-    if(value ==="This Year"){
+    if (value === "This Year") {
       const date = ['second', 'minute', 'hour', 'day', 'week', 'month']
       this.props.dateFilter(date)
     }
 
-    if(value === "Comments Made: Lifetime"){
+    if (value === "Comments Made: Lifetime") {
       const date = ''
       this.props.dateFilter(date)
     }
@@ -91,22 +90,24 @@ class Filter extends Component {
   }
 
   render() {
-    // const { Result } = this.props
-    let { wordFilterClick } = this.state
-    let { userFilterClick } = this.state
-    let { userFilterText } = this.state
-    let { videoCreatorComRep } = this.state
 
+    let { wordFilterClick, userFilterClick, userFilterText, videoCreatorComRep } = this.state
+
+    // Don't allow access to "Video Creator Filter" if "User Filter" is used
     const disableCreator = userFilterText ? ("disabled") : ("")
+
+    // Don't allow access to "User Filter" if "Video Creator Filter" is used
     const disableUser = videoCreatorComRep ? ("disabled") : ("")
     const disableUserText = disableUser === "disabled" ? (" - disabled - Video Creator filter is On") : ("")
 
     return (
       <div className="filter-class">
+
         <div className="filter-title">
           <h5> <b>Comment Filter:</b> </h5>
         </div>
-        
+
+        {/* Creator Filter */}
         <form action="#" className="filter-form">
           <div className="creator-filter">
             <label>
@@ -119,13 +120,16 @@ class Filter extends Component {
                 disabled={disableCreator}
               />
               {/* In order to show the checkbox, I need to have a span tag after it.
-                The span tag includes a space - meaning: you can click a little to the right, and a click will still register */}
+                I would rather have text on the left, to make the page look pleasing.
+                Therefore - the span tag includes a space - meaning: you can click a little to the right, and a click will still register */}
               <span>&nbsp;</span>
             </label>
-            </div>
+          </div>
 
+          {/* Likes Filter */}
           <div className="likes-filter-input">
-            <label className="likes-filter-label" htmlFor="likes-filter">Have at least this many likes: </label>
+            <label className="likes-filter-label" 
+            htmlFor="likes-filter">Have at least this many likes: </label>
             <input
               id="likes-filter"
               type="number"
@@ -136,6 +140,7 @@ class Filter extends Component {
             />
           </div>
 
+          {/* Word Filter */}
           <div className="row word-filter-row">
             <div className="input-field col s6">
               <input
@@ -172,6 +177,7 @@ class Filter extends Component {
             </div>
           </div>
 
+          {/* Date Filter Dropdown*/}
           <div className="input-field-date col s12">
             <select
               defaultValue="0"
@@ -186,7 +192,6 @@ class Filter extends Component {
               <option value="5">This Year</option>
             </select>
           </div>
-       
 
         </form>
 

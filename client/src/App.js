@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Route exact path='/' component={VideoSubmission}/>
+          <Route exact path='/' component={VideoSubmission} />
         </div>
       </BrowserRouter>
     )

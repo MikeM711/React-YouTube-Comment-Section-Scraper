@@ -4,11 +4,16 @@ import './Progress.css'
 class Progress extends Component {
 
   render() {
+    // Socket.io messages from VideoSubmission component
     const { ProgressScroll, ComExpand, ShowMoreRep, FindRep, 
       ErrMsg, Thumbnail, Title, VideoFound } = this.props
 
+      // Socket.io will be giving us the progress of the application
+
       let findingVideo = VideoFound ? ('Video Found!') : ('Searching...')
       findingVideo = !VideoFound && ErrMsg ? ('Video Not Found') : (findingVideo)
+
+      // Turn text "green" (className = "complete") to let the user know that a section of progress is complete 
 
       const completeFindVideo = VideoFound ? ("complete") : ("incomplete")
       const completeScroll = ComExpand ? ("complete") : ("incomplete")

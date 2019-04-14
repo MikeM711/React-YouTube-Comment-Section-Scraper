@@ -12,7 +12,7 @@ router.post('/youtubeData', (req, res) => {
 
     // Sending data to "scrape-video" util
     const data = await youtubeScraper.oneVideo(req, res, youtubeLink, io)
-    console.log(data)
+    // console.log(data)
 
     // send payload to frontend when complete
     io.emit('ResultData', data);

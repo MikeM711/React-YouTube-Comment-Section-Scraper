@@ -13,20 +13,19 @@ class Reply extends Component {
     const AvatarRep = reply.avatarRep !== "" ? (reply.avatarRep) : (undefAvatar)
 
     var finder = ""
-        if(reply.filter === true){
-          finder = "finder"
-        }
+    if (reply.filter === true) {
+      finder = "finder"
+    }
 
     return (
       <div className="reply-class collection-item" key={reply.id}>
         <div className={CreatorRep}>
           <img src={AvatarRep} alt=""></img>
           <span> <b>{reply.nameRep}</b> </span>
-          <img src={checkmarkRep} alt=""/>
+          <img src={checkmarkRep} alt="" />
           <span> | Date: {reply.dateRep} | </span>
           <span>Likes: {reply.likesRep} | </span>
           <a href={reply.linkRep} target="_blank" rel="noopener noreferrer" >Context</a>
-          {/*<span>Creator? {Creator} </span> */}
         </div>
         <div className={"reply-content " + finder}>
           <p>{reply.reply}</p>

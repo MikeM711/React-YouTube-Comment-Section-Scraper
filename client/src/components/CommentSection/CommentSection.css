@@ -1,9 +1,7 @@
-
 div.comment-thread {
   padding-left: 10px;
   padding-right: 10px
 }
-
 
 div.comment-class-reply {
   padding-left: 50px;
@@ -12,7 +10,6 @@ div.comment-class-reply {
 div.comment-header img, div.comment-header-creator img {
   vertical-align:middle
 }
-
 
 div.comment-header, div.comment-header-creator{
   background: #c2c6ce;
@@ -23,12 +20,10 @@ div.comment-header-creator {
   background: #fffdea
 }
 
-
 div.comment-content {
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 1px;
-  
 }
 
 div.finder {
@@ -39,4 +34,3 @@ div.no-comments-card {
   padding-top: 20px;
   padding-bottom: 20px
 }
-

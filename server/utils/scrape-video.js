@@ -120,7 +120,7 @@ async function main(req, res, youtubeLink, io) {
 
     // Convert the number of comments into a JS number
     commentNumber = Number(commentNumber.replace(" Comments", "").replace(",", ""))
-    console.log(commentNumber)
+    console.log('YouTube sees', commentNumber, 'posts')
 
     // Do not allow program to continue, if YouTube finds 2000+ comments
     if (commentNumber >= 2000) {
@@ -161,14 +161,14 @@ async function main(req, res, youtubeLink, io) {
       // If exectuion enters here, the scroll has rendered comments
       if (preCommentHanlder.length < afterCommentHanlder.length) {
         i++
-        console.log('more comments loaded!', i)
+        console.log('Scroll batch rendered:', i)
         await io.emit('ScrollData', `Scroll batches rendered: ${i}`);
         await res.write('more comments loaded')
       }
 
       // if execution enters inside this loop, "continuation" HTML does not exist - all threads (OP comments) have been rendered out
       if (!buffer) {
-        console.log("no more 'continuation' HTML")
+        console.log("No more 'continuation' HTML")
         await io.emit('ScrollData', `Scroll batches rendered: ${i}`);
         active = false
       }
@@ -196,8 +196,14 @@ async function main(req, res, youtubeLink, io) {
 
         // Check to see if popup selector exists
         const popup = await page.$('paper-dialog.ytd-popup-container')
+
         if (activePop && popup) {
+          console.log('popup found')
+
+          // Give exeuction some time to get the selector
+          await page.waitForSelector('paper-dialog.ytd-popup-container yt-formatted-string.style-text', {timeout: 60000})
           const popupBtn = await page.$('paper-dialog.ytd-popup-container yt-formatted-string.style-text')
+
           await page.waitFor(500) // breathe before clicking popup
           await popupBtn.click()
 
