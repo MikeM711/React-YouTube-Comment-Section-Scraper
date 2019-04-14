@@ -1,0 +1,10 @@
+div.github-repo a{
+  padding-left: 10px;
+  font-size: 16px;
+}
+
+div.github-repo img {
+  vertical-align: middle;
+  width: 30px;
+  height: auto;
+}

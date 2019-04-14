@@ -68,7 +68,7 @@ select.date-filter {
     z-index: 0;
 }
 
-@media only screen and (max-width: 920px) {
+@media only screen and (max-width: 1150px) {
     span.creator-filter-text {
         font-size: 12px;
     }

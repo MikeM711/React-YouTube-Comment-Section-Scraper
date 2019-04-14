@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import gitIcon from '../../Images/github-icon.png'
+import './Form.css'
 
 class Form extends Component {
   state = {
@@ -62,6 +64,14 @@ class Form extends Component {
             onClick={this.handleTestVideo}
             disabled={progressActive}
           >Click For An Example URL</button>
+        </div>
+
+        <br></br>
+
+        <div className="github-repo">
+          <img src={gitIcon} alt=""/>
+          <a href="https://github.com/MikeM711/youtube-comment-section-scraper" 
+            target="_blank" rel="noopener noreferrer">GitHub Repo</a>
         </div>
 
       </div>

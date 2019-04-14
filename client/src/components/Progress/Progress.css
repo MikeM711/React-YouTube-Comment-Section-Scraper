@@ -22,3 +22,7 @@ p.errorMsg {
 div.progress-title {
   margin-left: 5%
 }
+
+div.progress-class div.progres-issues-card {
+  padding-bottom: 10px;
+}

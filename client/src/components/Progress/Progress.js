@@ -41,7 +41,18 @@ class Progress extends Component {
           <p className={completeShowMore}> <b>"Show More Replies" Buttons:</b> {ShowMoreRep}</p>
           <p className={completeFindRep}> <b>Finding Replies:</b> {FindRep}</p>
         </div>
+        <div className="row progress-issues-row">
+          <div className="card-panel progres-issues-card #eeeeee grey lighten-3 col s6" >
+            <p>If your progress is hanging (no progress made within 60 seconds), or an incorrect error shows up: </p>
+            <p>1. Refresh and try again</p>
+            <span>2. Send your progress log and your link to my </span>
+            <a href="https://github.com/MikeM711/youtube-comment-section-scraper"
+              target="_blank" rel="noopener noreferrer">GitHub</a>
+          </div>
+
+        </div>
       </div>
+      
     )
   }
 }
