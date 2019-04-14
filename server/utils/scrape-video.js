@@ -20,7 +20,7 @@ async function main(req, res, youtubeLink, io) {
     await page.goto(`${youtubeLink}`);
 
     // We know this page is loaded when the below selector renders on screen
-    await page.waitForSelector('yt-visibility-monitor#visibility-monitor')
+    await page.waitForSelector('yt-visibility-monitor#visibility-monitor', {timeout: 60000})
     await page.waitFor(100) // time to breathe
 
     await console.log('video is in view!')
@@ -57,7 +57,7 @@ async function main(req, res, youtubeLink, io) {
 
     // Send YT video title to frontend
     const titleSelect = 'h1.title yt-formatted-string.ytd-video-primary-info-renderer'
-    await page.waitForSelector(titleSelect)
+    await page.waitForSelector(titleSelect, {timeout: 60000})
     const titleSelelctHandle = await page.$(titleSelect)
     const titleName = await page.evaluate(title => title.innerText, titleSelelctHandle)
     await console.log(titleName)
@@ -112,7 +112,7 @@ async function main(req, res, youtubeLink, io) {
     await page.evaluate(() => {
       window.scrollBy(0, 400);
     });
-    await page.waitForSelector('yt-formatted-string.count-text')
+    await page.waitForSelector('yt-formatted-string.count-text', {timeout: 60000})
 
     // count the amount of youtube comments
     const commentNumHandle = await page.$("yt-formatted-string.count-text")
@@ -130,7 +130,7 @@ async function main(req, res, youtubeLink, io) {
     }
 
     // Fix the "Stopping on scroll" problem, wait for page to render out "next continuation" HTML
-    await page.waitForSelector('yt-next-continuation.ytd-item-section-renderer')
+    await page.waitForSelector('yt-next-continuation.ytd-item-section-renderer', {timeout: 60000})
 
     // variables for while loop
     let active = true
