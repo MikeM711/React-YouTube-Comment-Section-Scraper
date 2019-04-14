@@ -12,10 +12,7 @@ class Reply extends Component {
     const checkmarkRep = reply.isCreatorRep ? (checkmarkImg) : (null)
     const AvatarRep = reply.avatarRep !== "" ? (reply.avatarRep) : (undefAvatar)
 
-    var finder = ""
-    if (reply.filter === true) {
-      finder = "finder"
-    }
+    const finder = reply.filter === true ? ("finder") : ("")
 
     return (
       <div className="reply-class collection-item" key={reply.id}>

@@ -70,11 +70,7 @@ class CommentSection extends Component {
 
         // Below variable adds "finder" to the className of a div to show what post has been found, due to filtering
 
-        var finder = ""
-
-        if (OPcomment.filter === true) {
-          finder = "finder"
-        }
+        const finder = OPcomment.filter === true ? ("finder") : ("")
 
         // For a single comment thread, replies will be stored below
         const replies = OPcomment.replies.length ? (
