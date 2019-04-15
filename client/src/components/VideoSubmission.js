@@ -114,6 +114,11 @@ class VideoSubmission extends Component {
       <div className="app container">
         <div>
           <h2 className="blue-text">YouTube Comment Scraper</h2>
+          
+          <div className="row">
+            <h5 className="blue-text col offset-s0">Scrapes Without Using YouTube API</h5>
+          </div>
+          
         </div>
         <div>
 
