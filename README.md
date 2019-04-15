@@ -7,7 +7,7 @@ Once the client has received the comment section data, the user is able to filte
 
 If a comment or reply in a thread does not meet filter criteria, the comment thread will not display.  
 
-If either a comment or a reply meets filter criteria, the particular post will highlight in green, and the whole thread will display. Having the entire thread display was in the mindset of providing context to the filtered post.
+If either a comment or a reply meets filter criteria, the particular post will highlight in green, and the whole thread will display. Having the entire thread display was made in the mindset of providing context to the filtered post.
 
 Check out the application: https://youtube-comment-scraper.herokuapp.com/
 
@@ -64,7 +64,24 @@ If you wish to display dummy data: inside [Video Submission Component](https://g
     // resultsActive = true // testing
     // progressActive = true // testing
 
+### Test Videos
+
+    https://www.youtube.com/watch?v=lDLQA6lQSFg (disabled comments)
+    https://www.youtube.com/watch?v=IaKLsGIR6SM (0 comments)
+    https://www.youtube.com/watch?v=DozrRY2NENU (500 comments)
+    https://www.youtube.com/watch?v=PkZNo7MFNFg (1,100 comments & 1K+ comment)
+    https://www.youtube.com/watch?v=D3uvvA7dyoI (1,600 comments many 1K+ comments)
+    https://www.youtube.com/watch?v=th5QV1mnWXo (too many comments )
+
 # FAQ
+
+Q: How come the number of YouTube comments scraped by this application does not equal the number that YouTube displays?
+
+A: This program reads comments like an average user, and therefore, will scrape all comments that an average user will view.  Interestingly, it seems that YouTube does not display all of its comments!  You can test this out by manually expanding all comments of this [video](https://www.youtube.com/watch?v=DozrRY2NENU&lc=UgwJXxkTYTp3wUA579Z4AaABAg) (click every "View # replies" and "Show more replies" buttons). Personally, I have found ~90 comments less than what YouTube displays (equal to the number this application can scrape).
+
+If you are creating a program that must be able to read all YouTube comments (including ones that do not get rendered), check out the [YouTube API](https://developers.google.com/youtube/v3/docs/commentThreads/list).
+
+If you are creating a program where all of your data is accurately displayed on the client, Puppeteer is a viable choice.
 
 Q: Why use `"puppeteer": "^1.9.0"` and not the latest version?
 
@@ -76,8 +93,8 @@ A: How YouTube renders its comment section, and the time it takes to render, var
 
 Q: Why are comments capped at 2,000?
 
-A: The Application can scrape an infinite number of comments.  But there are a few issues: 
+A: The application can scrape an infinite number of comments.  But there are a few issues: 
 
 1) The more HTML is rendered, the slower the YouTube page becomes. I would rather not have the user wait a long time for a comment section to load. 
 
-2) Heroku can become finicky when dealing with large numbers of comments.
+2) Heroku can become finicky when dealing with Puppeteer/Chrome processing a large numbers of comments on the page.
