@@ -75,9 +75,9 @@ If you wish to display dummy data: inside [Video Submission Component](https://g
 
 # FAQ
 
-Q: How come the number of YouTube comments scraped by this application does not equal the number that YouTube displays?
+Q: For videos with a large amount of comments, why does the number of YouTube comments scraped by this application not always equal to the number that YouTube displays?
 
-A: This program reads comments like an average user, and therefore, will scrape all comments that an average user will view.  Interestingly, it seems that YouTube does not display all of its comments!  You can test this out by manually expanding all comments of this [video](https://www.youtube.com/watch?v=DozrRY2NENU&lc=UgwJXxkTYTp3wUA579Z4AaABAg) (click every "View # replies" and "Show more replies" buttons). Personally, I have found ~90 comments less than what YouTube displays (equal to the number this application can scrape).
+A: This program reads comments like an average user, and therefore, will scrape all comments that an average user will view.  Interestingly, it seems that YouTube does not display all of its comments!  This typically occurs when a video has about 300+ comments.  You can test this out by manually expanding all comments of this [video](https://www.youtube.com/watch?v=DozrRY2NENU&lc=UgwJXxkTYTp3wUA579Z4AaABAg) (click every "View # replies" and "Show more replies" buttons). Personally, I have found ~90 comments less than what YouTube displays (equal to the number this application can scrape).
 
 If you are creating a program that must be able to read all YouTube comments (including ones that do not get rendered), check out the [YouTube API](https://developers.google.com/youtube/v3/docs/commentThreads/list).
 
@@ -87,7 +87,7 @@ Q: Why use `"puppeteer": "^1.9.0"` and not the latest version?
 
 A: The latest version has trouble viewing YouTube videos.
 
-Q: How come the number of "Scroll Batches" may vary for the same video?
+Q: Why do the number of "Scroll Batches" may vary for the same video?
 
 A: How YouTube renders its comment section, and the time it takes to render, varies. That said, the program should complete with the same number of comments and replies every time.
 
