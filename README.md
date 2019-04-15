@@ -1,7 +1,7 @@
-# Youtube Comment Section Scraper
+# React Youtube Comment Section Scraper
 A full stack application that scrapes and filters YouTube comments of a particular video, using Node.js, Express and React.
 
-The application scrapes YouTube comments with Chrome Headless (using Google's [Puppeteer](https://github.com/GoogleChrome/puppeteer)), instead of using the YouTube API.  Application relays real-time progress messages to the client using Socket.IO, for an appropriate user-experience. Data and progress is displayed to the client, using React.
+This application scrapes YouTube comments with Chrome Headless (using Google's [Puppeteer](https://github.com/GoogleChrome/puppeteer)), instead of using the YouTube API.  Application relays real-time progress messages to the client using Socket.IO, for an appropriate user-experience. Data and progress is displayed to the client, using React.
 
 Once the client has received the comment section data, the user is able to filter comments and replies by: video creator, number of likes, word phrases, username, and date. Filtering is displayed instantly. Using multiple filters will be chained together for a more specific result.
 
