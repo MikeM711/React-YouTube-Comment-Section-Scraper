@@ -1,28 +1,28 @@
 div.filter-class {
-    margin-top: -20px
+    margin-top: -20px;
 }
 
 div.filter-title {
-    margin-left:5%
+    margin-left: 5%;
 }
 
 div.creator-filter {
-    margin-top:20px;
-    margin-bottom:10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 form.filter-form {
-    padding-left: 0%
+    padding-left: 0%;
 }
 
 div.input-field {
     padding-left: 0px;
-    margin-bottom: 0px
+    margin-bottom: 0px;
 }
 
 label.likes-filter-label {
     font-size: 15px;
-    padding-right: 10px
+    padding-right: 10px;
 }
 
 input#likes-filter {
@@ -30,7 +30,7 @@ input#likes-filter {
 }
 
 div.likes-filter-input {
-    padding-top: 10px
+    padding-top: 10px;
 }
 
 input#word-filter {
@@ -45,7 +45,7 @@ span.creator-filter-text {
 
 div.word-filter-row{
     margin: 0px;
-    margin-left: -10px
+    margin-left: -10px;
 }
 
 div.user-filter-row{

@@ -2,16 +2,12 @@ p.errorMsg {
   color: red;
  }
  
- div.progress-display p.complete {
-   color: green
- }
-
- div.progress-title h5.complete {
-   color: green
+ div.progress-display p.complete, div.progress-title h5.complete {
+   color: green;
  }
 
  div.progress-class {
-   margin-bottom: 50px
+   margin-bottom: 50px;
  }
 
  div.thumbnail img {
@@ -20,7 +16,7 @@ p.errorMsg {
 }
 
 div.progress-title {
-  margin-left: 5%
+  margin-left: 5%;
 }
 
 div.progress-class div.progres-issues-card {
