@@ -79,7 +79,7 @@ class Filter extends Component {
         this.props.dateFilter(date);
         break;
       default:
-        date = ''
+        date = '';
         this.props.dateFilter(date);
         break;
     };

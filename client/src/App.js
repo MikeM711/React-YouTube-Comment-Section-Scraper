@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import VideoSubmission from './components/VideoSubmission';
+import VideoSubmission from './components/VideoSubmission/VideoSubmission';
 import { Route, BrowserRouter } from 'react-router-dom';
 
 class App extends Component {

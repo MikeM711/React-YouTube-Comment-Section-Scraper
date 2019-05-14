@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
-import './Progress.css'
+
+import './Progress.css';
 
 class Progress extends Component {
 
   render() {
     // Socket.io messages from VideoSubmission component
-    const { ProgressScroll, ComExpand, ShowMoreRep, FindRep, 
-      ErrMsg, Thumbnail, Title, VideoFound } = this.props
+    const { ProgressScroll, ComExpand, ShowMoreRep, FindRep,
+      ErrMsg, Thumbnail, Title, VideoFound } = this.props;
 
-      // Socket.io will be giving us the progress of the application
+    // Socket.io will be giving us the progress of the application
+    let findingVideo = VideoFound ? ('Video Found!') : ('Searching...');
+    findingVideo = !VideoFound && ErrMsg ? ('Video Not Found') : (findingVideo);
 
-      let findingVideo = VideoFound ? ('Video Found!') : ('Searching...')
-      findingVideo = !VideoFound && ErrMsg ? ('Video Not Found') : (findingVideo)
-
-      // Turn text "green" (className = "complete") to let the user know that a section of progress is complete 
-
-      const completeFindVideo = VideoFound ? ("complete") : ("incomplete")
-      const completeScroll = ComExpand ? ("complete") : ("incomplete")
-      const completeExpand = ShowMoreRep ? ("complete") : ("incomplete")
-      const completeShowMore = ShowMoreRep === '0 "show more replies" buttons visible' ? 
-        ("complete") : ("incomplete")
-      const completeFindRep = FindRep === '"Reply Finding" Complete! Scroll down to view results.' ?
-        ("complete") : ("incomplete")
-      const completeProgress = completeFindRep === "complete" ? ('Completed') : (null)
+    // Turn text "green" (className = "complete") to let the user know that a section of progress is complete 
+    const completeFindVideo = VideoFound ? ("complete") : ("incomplete");
+    const completeScroll = ComExpand ? ("complete") : ("incomplete");
+    const completeExpand = ShowMoreRep ? ("complete") : ("incomplete");
+    const completeShowMore = ShowMoreRep === '0 "show more replies" buttons visible' ?
+      ("complete") : ("incomplete");
+    const completeFindRep = FindRep === '"Reply Finding" Complete! Scroll down to view results.' ?
+      ("complete") : ("incomplete");
+    const completeProgress = completeFindRep === "complete" ? ('Completed') : (null);
 
     return (
       <div className="progress-class">
@@ -49,12 +48,10 @@ class Progress extends Component {
             <a href="https://github.com/MikeM711/youtube-comment-section-scraper"
               target="_blank" rel="noopener noreferrer">GitHub</a>
           </div>
-
         </div>
       </div>
-      
-    )
-  }
-}
+    );
+  };
+};
 
 export default Progress;

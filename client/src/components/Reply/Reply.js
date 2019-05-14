@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import './Reply.css'
-import undefAvatar from '../../Images/question-mark.jpg'
-import checkmarkImg from '../../Images/checkmark.png'
+
+import './Reply.css';
+import undefAvatar from '../../Images/question-mark.jpg';
+import checkmarkImg from '../../Images/checkmark.png';
 
 class Reply extends Component {
 
   render() {
-    const { reply } = this.props
-
-    const CreatorRep = reply.isCreatorRep ? ("reply-header-creator") : ("reply-header")
-    const checkmarkRep = reply.isCreatorRep ? (checkmarkImg) : (null)
-    const AvatarRep = reply.avatarRep !== "" ? (reply.avatarRep) : (undefAvatar)
-
-    const finder = reply.filter === true ? ("finder") : ("")
+    const { reply } = this.props;
+    const CreatorRep = reply.isCreatorRep ? ("reply-header-creator") : ("reply-header");
+    const checkmarkRep = reply.isCreatorRep ? (checkmarkImg) : (null);
+    const AvatarRep = reply.avatarRep !== "" ? (reply.avatarRep) : (undefAvatar);
+    const finder = reply.filter === true ? ("finder") : ("");
 
     return (
       <div className="reply-class collection-item" key={reply.id}>
@@ -28,8 +27,8 @@ class Reply extends Component {
           <p>{reply.reply}</p>
         </div>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
 export default Reply;
