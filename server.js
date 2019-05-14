@@ -1,8 +1,7 @@
 const express = require('express');
-const routes = require('./server/routes')
+const routes = require('./server/routes');
 const bodyParser = require('body-parser');
 const path = require('path');
-
 const http = require("http");
 const socketIo = require("socket.io");
 
@@ -28,12 +27,12 @@ io.on("connection", socket => {
 
   socket.on('disconnect', () => {
     console.log("user disconnected");
-  })
+  });
 });
 
 app.set('socketio', io);
 
-app.use('/', routes)
+app.use('/', routes);
 
 // Handles any requests that do not match the ones above
 app.get('*', (req, res) => {
@@ -44,9 +43,9 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, (err) => {
   if (!err) {
-    console.log('site is live')
+    console.log('site is live');
   }
   else {
-    console.log(err)
-  }
-})
+    console.log(err);
+  };
+});

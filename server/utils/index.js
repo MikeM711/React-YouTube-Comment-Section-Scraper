@@ -1,4 +1,4 @@
-const oneVideo = require('./scrape-video')
-const uploaderVideos = require('./scrape-uploader-videos')
+const oneVideo = require('./scrape-video');
+const uploaderVideos = require('./scrape-uploader-videos');
 
-module.exports = {oneVideo, uploaderVideos}
+module.exports = {oneVideo, uploaderVideos};
