@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './Filter.css'
+
+import './Filter.css';
 
 class Filter extends Component {
   state = {
@@ -9,100 +10,93 @@ class Filter extends Component {
     likesFilterNum: '',
     userFilterClick: '',
     userFilterText: false,
-  }
+  };
 
   handleVideoCreator = () => {
-    this.setState((state, props) => ({
+    this.setState((state) => ({
       videoCreatorComRep: !state.videoCreatorComRep
     }), () => {
       this.props.creatorFilter(this.state.videoCreatorComRep)
-    })
-  }
+    });
+  };
 
   handleWordFilterChange = (event) => {
     const value = event.target.value.toLowerCase()
-    this.setState((state, props) => ({
+    this.setState(() => ({
       wordFilterText: value
     }), () => {
       this.props.wordFilter(value)
-    })
-  }
+    });
+  };
 
   handleUserFilterChange = (event) => {
     // make sure that all username checks are rendered toLowerCase()
     const value = event.target.value.toLowerCase()
-    this.setState((state, props) => ({
+    this.setState(() => ({
       userFilterText: value
     }), () => {
       this.props.nameFilter(value)
-    })
-  }
+    });
+  };
 
   handleLikesFilterChange = (event) => {
-    const value = event.target.value
+    const value = event.target.value;
     const re = /^[0-9\b]+$/; // only allow Numbers (0 - 9)
     if (event.target.value === '' || re.test(event.target.value)) {
-      this.setState((state, props) => ({
+      this.setState(() => ({
         likesFilterNum: value
       }), () => {
         this.props.LikesFilter(value)
-      })
-    }
-  }
+      });
+    };
+  };
 
   handleDateFilter = (event) => {
-    const value = event.target.options[event.target.selectedIndex].text
-    if (value === "Last Hour") {
-      const date = ['second', 'minute']
-      this.props.dateFilter(date)
-    }
-
-    if (value === "Today") {
-      const date = ['second', 'minute', 'hour']
-      this.props.dateFilter(date)
-    }
-
-    if (value === "This Week") {
-      const date = ['second', 'minute', 'hour', 'day']
-      this.props.dateFilter(date)
-    }
-
-    if (value === "This Month") {
-      const date = ['second', 'minute', 'hour', 'day', 'week']
-      this.props.dateFilter(date)
-    }
-
-    if (value === "This Month") {
-      const date = ['second', 'minute', 'hour', 'day', 'week']
-      this.props.dateFilter(date)
-    }
-
-    if (value === "This Year") {
-      const date = ['second', 'minute', 'hour', 'day', 'week', 'month']
-      this.props.dateFilter(date)
-    }
-
-    if (value === "Comments Made: Lifetime") {
-      const date = ''
-      this.props.dateFilter(date)
-    }
-
-  }
+    const value = event.target.options[event.target.selectedIndex].text;
+    switch(value) {
+      case "Last Hour":
+        let date = ['second', 'minute'];
+        this.props.dateFilter(date);
+        break;
+      case "Today":
+        date = ['second', 'minute', 'hour'];
+        this.props.dateFilter(date);
+        break;
+      case "This Week":
+        date = ['second', 'minute', 'hour', 'day'];
+        this.props.dateFilter(date);
+        break;
+      case "This Month":
+        date = ['second', 'minute', 'hour', 'day', 'week'];
+        this.props.dateFilter(date);
+        break;
+      case "This Year":
+        date = ['second', 'minute', 'hour', 'day', 'week', 'month'];
+        this.props.dateFilter(date);
+        break;
+      case "Comments Made: Lifetime":
+        date = '';
+        this.props.dateFilter(date);
+        break;
+      default:
+        date = ''
+        this.props.dateFilter(date);
+        break;
+    };
+  };
 
   render() {
-
-    let { wordFilterClick, userFilterClick, userFilterText, videoCreatorComRep } = this.state
+    const { wordFilterClick, userFilterClick, userFilterText, videoCreatorComRep } = this.state;
 
     // Don't allow access to "Video Creator Filter" if "User Filter" is used
-    const disableCreator = userFilterText ? ("disabled") : ("")
+    const disableCreator = userFilterText ? ("disabled") : ("");
 
     // Don't allow access to "User Filter" if "Video Creator Filter" is used
-    const disableUser = videoCreatorComRep ? ("disabled") : ("")
-    const disableUserText = disableUser === "disabled" ? (" - disabled - Video Creator filter is On") : ("")
+    const disableUser = videoCreatorComRep ? ("disabled") : ("");
+    const disableUserText = disableUser === "disabled" ? (" - disabled - Video Creator filter is On") : ("");
 
     return (
       <div className="filter-class">
-
         <div className="filter-title">
           <h5> <b>Comment Filter:</b> </h5>
         </div>
@@ -128,8 +122,8 @@ class Filter extends Component {
 
           {/* Likes Filter */}
           <div className="likes-filter-input">
-            <label className="likes-filter-label" 
-            htmlFor="likes-filter">Have at least this many likes: </label>
+            <label className="likes-filter-label"
+              htmlFor="likes-filter">Have at least this many likes: </label>
             <input
               id="likes-filter"
               type="number"
@@ -166,8 +160,8 @@ class Filter extends Component {
                 type="text"
                 onBlur={() => {
                   if (!this.state.userFilterText) {
-                    this.setState({ userFilterClick: '' })
-                  }
+                    this.setState({ userFilterClick: '' });
+                  };
                 }}
                 onFocus={() => { this.setState({ userFilterClick: 'active' }) }}
                 onChange={this.handleUserFilterChange}
@@ -194,10 +188,9 @@ class Filter extends Component {
           </div>
 
         </form>
-
       </div>
-    )
-  }
-}
+    );
+  };
+};
 
 export default Filter;
