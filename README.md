@@ -1,7 +1,7 @@
 # React Youtube Comment Section Scraper
-A full stack application that scrapes and filters YouTube comments of a particular video, using Node.js, Express and React.
+A full stack application that scrapes and filters YouTube comments of a particular video, using Node.js, Express.js, React.js, Puppeteer and Socket.IO.
 
-This application scrapes YouTube comments with Chrome Headless (using Google's [Puppeteer](https://github.com/GoogleChrome/puppeteer)), instead of using the YouTube API.  It also relays real-time progress messages to the client using Socket.IO, for an appropriate user-experience. Data and progress is displayed to the client, using React.
+This application scrapes YouTube comments with Chrome Headless (using Google's [Puppeteer](https://github.com/GoogleChrome/puppeteer)), instead of using the YouTube API.  It also relays real-time progress messages to the client using Socket.IO, for an appropriate user-experience. Data and progress is displayed to the client, using React.js.
 
 Once the client has received the comment section data, the user is able to filter comments and replies by: video creator, number of likes, word phrases, username, and date. Filtering is displayed instantly. Using multiple filters will be chained together for a more specific result.
 
@@ -55,7 +55,7 @@ Concurrently run both backend and frontend servers (root directory): `npm run st
 
 ### View Dummy YouTube Comment Section
 
-If you wish to display dummy data: inside [Video Submission Component](https://github.com/MikeM711/youtube-comment-section-scraper/blob/master/client/src/components/VideoSubmission.js), comment out the `let...` line, and un-comment the last 3 lines.
+If you wish to display dummy data: inside [Video Submission Component](https://github.com/MikeM711/React-YouTube-Comment-Section-Scraper/blob/master/client/src/components/VideoSubmission/VideoSubmission.js), comment out the `let...` line, and un-comment the last 3 lines.
 
     // Testing & Production
 
