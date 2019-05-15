@@ -9,7 +9,7 @@ If a comment or reply in a thread does not meet filter criteria, the comment thr
 
 If either a comment or a reply meets filter criteria, the particular post will highlight in green, and the whole thread will display. Having the entire thread display was made in the mindset of providing context to the filtered post.
 
-Check out the application: https://youtube-comment-scraper.herokuapp.com/
+Check out the application here: https://youtube-comment-scraper.herokuapp.com/
 
 ## Backend
 
