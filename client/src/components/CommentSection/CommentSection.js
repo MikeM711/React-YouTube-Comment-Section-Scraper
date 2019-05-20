@@ -6,6 +6,7 @@ import Filter from '../Filter/Filter';
 import filterFunction from '../../utils/FilterUtil';
 import undefAvatar from '../../Images/question-mark.jpg';
 import checkmarkImg from '../../Images/checkmark.png';
+import commentIcon from '../../Images/comment-icon.png';
 
 class CommentSection extends Component {
   state = {
@@ -110,7 +111,7 @@ class CommentSection extends Component {
 
     // Render out filter, comments and replies
     return (
-      <div className="progress-class">
+      <div className="completed-scrape-results">
         <Filter
           creatorFilter={this.handleCreatorFilter}
           wordFilter={this.handleWordFilter}
@@ -119,7 +120,10 @@ class CommentSection extends Component {
           nameFilter={this.handleNameFilter}
         />
         <div className="comment-class">
-          <h3 className="center blue-text"> Comment Section </h3>
+          <div className="comment-title">
+            <img className="comment-icon" src={commentIcon} alt="" />
+            <h3 className="blue-text"> <b>Comment Section</b></h3>
+          </div>
           {comments}
         </div>
       </div>

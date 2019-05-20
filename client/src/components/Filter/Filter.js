@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import './Filter.css';
+import filterIcon from '../../Images/filter-icon.png';
 
 class Filter extends Component {
   state = {
@@ -53,7 +54,7 @@ class Filter extends Component {
 
   handleDateFilter = (event) => {
     const value = event.target.options[event.target.selectedIndex].text;
-    switch(value) {
+    switch (value) {
       case "Last Hour":
         let date = ['second', 'minute'];
         this.props.dateFilter(date);
@@ -98,8 +99,10 @@ class Filter extends Component {
     return (
       <div className="filter-class">
         <div className="filter-title">
-          <h5> <b>Comment Filter:</b> </h5>
+          <img src={filterIcon} alt="" />
+          <h4> <b>Comment Filter</b> </h4>
         </div>
+        <hr />
 
         {/* Creator Filter */}
         <form action="#" className="filter-form">

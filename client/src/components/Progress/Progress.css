@@ -2,23 +2,34 @@ p.errorMsg {
   color: red;
  }
  
- div.progress-display p.complete, div.progress-title h5.complete {
+ div.progress-display p.complete, h4.complete, h6.complete {
    color: green;
  }
 
  div.progress-class {
-   margin-bottom: 50px;
+   margin-bottom: 10px;
  }
 
  div.thumbnail img {
   width: 30%;
   height: auto;
+  margin-bottom: 10px;
 }
 
-div.progress-title {
-  margin-left: 5%;
+div.progress-title h6.complete {
+  margin-left: 52px;
 }
 
-div.progress-class div.progres-issues-card {
+div.progress-class div.progress-issues-card {
   padding-bottom: 10px;
+  padding-top: 3px;
+  max-width: 490px;
+}
+
+div.progress-title img, div.video-title img {
+  width: 40px;
+  margin-right: 10px;
+  vertical-align: middle;
+  height: auto;
+  float: left;
 }

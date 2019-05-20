@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import './Form.css';
-import gitIcon from '../../Images/github-icon.png';
 
 class Form extends Component {
   state = {
@@ -50,23 +49,18 @@ class Form extends Component {
               placeholder="Enter YouTube video URL here (2,000 comments maximum)"
             />
             <button
-              className="waves-effect waves-light btn #42a5f5 blue lighten-1"
+              className="waves-effect waves-light btn #42a5f5 blue lighten-1 submit-form-button"
               disabled={progressActive}
             >Submit</button>
           </form>
           <br />
           <button
-            className="waves-effect waves-light btn #90caf9 blue lighten-3"
+            className="waves-effect waves-light btn #90caf9 blue lighten-3 example-form-button"
             onClick={this.handleTestVideo}
             disabled={progressActive}
           >Click For An Example URL</button>
         </div>
         <br />
-        <div className="github-repo">
-          <img src={gitIcon} alt="" />
-          <a href="https://github.com/MikeM711/youtube-comment-section-scraper"
-            target="_blank" rel="noopener noreferrer">GitHub Repo</a>
-        </div>
       </div>
     );
   };

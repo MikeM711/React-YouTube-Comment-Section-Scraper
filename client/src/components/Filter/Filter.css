@@ -1,9 +1,14 @@
 div.filter-class {
-    margin-top: -20px;
+    padding-top: 10px;
 }
 
-div.filter-title {
-    margin-left: 5%;
+div.filter-title img {
+    width: 28px;
+    padding-top: 6px;
+    margin-right: 10px;
+    vertical-align: bottom;
+    height: auto;
+    float: left;
 }
 
 div.creator-filter {
@@ -84,4 +89,4 @@ select.date-filter {
     select.date-filter {
         font-size: 12px;
     }
-  }
+}

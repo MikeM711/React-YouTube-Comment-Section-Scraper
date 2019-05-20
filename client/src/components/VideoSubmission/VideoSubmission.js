@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import socketIOClient from 'socket.io-client';
 
+import './VideoSubmission.css';
+import gitIcon from '../../Images/github-icon.png';
 import Form from '../Form/Form';
 import Progress from '../Progress/Progress';
 import CommentSection from '../CommentSection/CommentSection';
@@ -99,19 +101,22 @@ class VideoSubmission extends Component {
 
     // Testing & Production
     let { ioResResult } = this.state; // production
-    // let ioResResult = JSON.stringify(require('../utils/TestResults/ResultTest2')) // testing
-    // resultsActive = true // testing
-    // progressActive = true // testing
+    // let ioResResult = JSON.stringify(require('../../utils/TestResults/ResultTest2')); // testing
+    // resultsActive = true; // testing
+    // progressActive = true; // testing
 
     // If there is no "ioResResult", make the variable 'false'
     ioResResult = ioResResult ? (ioResResult) : (false);
 
     return (
       <div className="app container">
-        <div>
-          <h2 className="blue-text">YouTube Comment Scraper</h2>
-          <div className="row">
-            <h5 className="blue-text col offset-s0">Scrapes Comments Without Using The YouTube API</h5>
+        <div className="title-panel card-panel #e0e0e0 grey lighten-2">
+          <h2 className="center"><b>YouTube Comment Scraper</b></h2>
+          <h5 className="col offset-s0 center">Scrapes comments without using the YouTube API</h5>
+          <div className="github-repo center">
+            <img src={gitIcon} alt="" />
+            <a className="github-link" href="https://github.com/MikeM711/youtube-comment-section-scraper"
+              target="_blank" rel="noopener noreferrer">GitHub Repo</a>
           </div>
         </div>
         <div>

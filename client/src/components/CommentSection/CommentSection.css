@@ -34,3 +34,18 @@ div.no-comments-card {
   padding-top: 20px;
   padding-bottom: 20px
 }
+
+div.comment-title {
+  text-align: center;
+}
+
+div.comment-title h3 {
+  display: inline-block;
+}
+
+img.comment-icon {
+  width: 40px;
+  margin-right: 10px;
+  vertical-align: bottom;
+  padding-bottom: 17px;
+}

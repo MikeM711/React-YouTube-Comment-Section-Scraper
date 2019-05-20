@@ -58,11 +58,10 @@ Concurrently run both backend and frontend servers (root directory): `npm run st
 If you wish to display dummy data: inside [Video Submission Component](https://github.com/MikeM711/React-YouTube-Comment-Section-Scraper/blob/master/client/src/components/VideoSubmission/VideoSubmission.js), comment out the `let...` line, and un-comment the last 3 lines.
 
     // Testing & Production
-
-    let { ioResResult } = this.state // production
-    // let ioResResult = JSON.stringify(require('../utils/TestResults/ResultTest2')) // testing
-    // resultsActive = true // testing
-    // progressActive = true // testing
+    let { ioResResult } = this.state; // production
+    // let ioResResult = JSON.stringify(require('../../utils/TestResults/ResultTest2')); // testing
+    // resultsActive = true; // testing
+    // progressActive = true; // testing
 
 ### Test Videos
 
