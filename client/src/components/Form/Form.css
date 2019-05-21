@@ -1,3 +1,15 @@
 button.submit-form-button:hover, .example-form-button:hover {
     opacity: 0.75;
 }
+
+@media only screen and (max-width: 500px) {
+    div.url-form input.youtube-url-input{
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    div.url-form input.youtube-url-input{
+        font-size: 9.5px;
+    }
+}

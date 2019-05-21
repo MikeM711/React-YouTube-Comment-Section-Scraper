@@ -21,8 +21,13 @@ form.filter-form {
 }
 
 div.input-field {
-    padding-left: 0px;
+    max-width: 500px;
+    padding-left: 10px;
     margin-bottom: 0px;
+}
+
+div.input-field label {
+    padding-left: 10px;
 }
 
 label.likes-filter-label {
@@ -59,7 +64,7 @@ div.user-filter-row{
 }
 
 select.date-filter {
-    width: 50%;
+    max-width: 300px;
     margin-left: 0px;
     margin-top: 10px;
 }

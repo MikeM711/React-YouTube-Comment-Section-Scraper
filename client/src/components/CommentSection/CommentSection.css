@@ -49,3 +49,23 @@ img.comment-icon {
   vertical-align: bottom;
   padding-bottom: 17px;
 }
+
+@media only screen and (max-width: 500px) {
+  div.comment-class h3 {
+    font-size: 30px;
+  } 
+
+  img.comment-icon {
+    width: 28px;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  div.comment-class h3 {
+    font-size: 25px;
+  } 
+
+  img.comment-icon {
+    width: 25px;
+  }
+}

@@ -462,13 +462,13 @@ async function main(req, res, youtubeLink, io) {
           // All information about a particular reply
           const replyInfo = {
             id: i,
-            avatarRep: avatarRep,
-            nameRep: nameRep,
-            dateRep: dateRep,
-            reply: reply,
-            likesRep: likesRep,
-            linkRep: linkRep,
-            isCreatorRep: isCreatorRep,
+            avatarRep,
+            nameRep,
+            dateRep,
+            reply,
+            likesRep,
+            linkRep,
+            isCreatorRep,
           };
           replies.push(replyInfo);
         };
@@ -487,14 +487,14 @@ async function main(req, res, youtubeLink, io) {
       // Thread is stored as the OP comment, and replies are stored in the 'replies' property
       const thread = {
         id: i,
-        avatar: avatar,
-        name: name,
-        date: date,
-        comment: comment,
-        likes: likes,
-        link: link,
-        isCreator: isCreator,
-        replies: replies
+        avatar,
+        name,
+        date,
+        comment,
+        likes,
+        link,
+        isCreator,
+        replies
       };
 
       // Heartbeat over connection

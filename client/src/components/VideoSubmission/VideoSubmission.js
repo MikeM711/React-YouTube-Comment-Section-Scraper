@@ -109,7 +109,7 @@ class VideoSubmission extends Component {
     ioResResult = ioResResult ? (ioResResult) : (false);
 
     return (
-      <div className="app container">
+      <div className="video-submission-container app container">
         <div className="title-panel card-panel #e0e0e0 grey lighten-2">
           <h2 className="center"><b>YouTube Comment Scraper</b></h2>
           <h5 className="col offset-s0 center">Scrapes comments without using the YouTube API</h5>

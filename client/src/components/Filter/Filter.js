@@ -139,7 +139,7 @@ class Filter extends Component {
 
           {/* Word Filter */}
           <div className="row word-filter-row">
-            <div className="input-field col s6">
+            <div className="input-field word-filter">
               <input
                 id="word-filter"
                 type="text"
@@ -157,7 +157,7 @@ class Filter extends Component {
 
           {/* User Filter */}
           <div className="row user-filter-row">
-            <div className="input-field col s6">
+            <div className="input-field user-filter">
               <input
                 id="user-filter"
                 type="text"
@@ -175,7 +175,7 @@ class Filter extends Component {
           </div>
 
           {/* Date Filter Dropdown*/}
-          <div className="input-field-date col s12">
+          <div className="input-field-date">
             <select
               defaultValue="0"
               className="date-filter browser-default"

@@ -42,6 +42,7 @@ class Form extends Component {
         <div className="url-form" >
           <form onSubmit={this.handleSubmit}>
             <input
+              className="youtube-url-input"
               type="text"
               onChange={this.handleUrlChange}
               value={this.state.url}

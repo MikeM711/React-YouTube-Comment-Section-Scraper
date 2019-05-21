@@ -23,3 +23,18 @@ div.github-repo img {
     width: 30px;
     height: auto;
 }
+
+@media only screen and (max-width: 550px) {
+    div.title-panel {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    div.video-submission-container h2 {
+        font-size: 30px;
+    }
+
+    div.video-submission-container h5 {
+        font-size: 15px;
+    }
+}
