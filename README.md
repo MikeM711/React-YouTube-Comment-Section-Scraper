@@ -1,3 +1,7 @@
+# !Important: July 17 2019
+
+It seems as though YouTube has changed some of its HTML. At this time, "Scroll Batches" and "Expanding Comments" are currently being worked on. Please hang tight!
+
 # React Youtube Comment Section Scraper
 A full stack application that scrapes and filters YouTube comments of a particular video, using Node.js, Express.js, React.js, Puppeteer and Socket.IO.
 
@@ -80,7 +84,7 @@ A: This program reads comments like an average user, and therefore, will scrape 
 
 If you are creating a program that must be able to read all YouTube comments (including ones that do not get rendered), check out the [YouTube API](https://developers.google.com/youtube/v3/docs/commentThreads).
 
-If you are creating a program where all of your data is accurately displayed on the client, Puppeteer is a viable choice.
+If you are creating a program where all of your data is accurately displayed on the client and the HTML does not frequently change (or you are prepared to fix your code during these HTML changes), Puppeteer is a viable choice.
 
 Q: Why use `"puppeteer": "^1.9.0"` and not the latest version?
 
