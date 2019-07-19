@@ -99,7 +99,7 @@ async function main(req, res, youtubeLink, io) {
       When we render out the page, scroll slightly and wait for comments to be loaded
     */
     await page.evaluate(() => {
-      window.scrollBy(0, 400);
+      window.scrollBy(0, 300);
     });
 
     // If comments are disabled, exit out of the process
@@ -172,7 +172,7 @@ async function main(req, res, youtubeLink, io) {
     await page.waitFor(1000); // time to breathe
 
     // The "context" of all "View # replies" buttons in the below selector - a long rectangle 'div-like' selector - AKA expander
-    let expander = await page.$$('ytd-expander.ytd-comment-replies-renderer');
+    let expander = await page.$$('div#expander');
     console.log('Clicking "View replies" buttons');
 
     // We only want to enter the "popup" loop once, so that we click the "YouTube TV" prompt once if it appears
@@ -209,9 +209,9 @@ async function main(req, res, youtubeLink, io) {
           activePop = false;
         };
 
-        // inside the expander context, there's a "View # replies" button in the below selector
-        let showMore = await expander[i].$('div.more-button');
-
+        // inside the expander context, there's a "paper-button" button in the below selector
+        let showMore = await expander[i].$('paper-button.ytd-button-renderer');
+        
         // click that "View # replies" button
         await showMore.click();
 
@@ -400,7 +400,7 @@ async function main(req, res, youtubeLink, io) {
       };
 
       // Check if this thread "container" has any replies
-      const hasReplies = await allOPCommentContainers[i].$$('div#replies ytd-comment-replies-renderer ytd-expander div#content div div#loaded-replies ytd-comment-renderer');
+      const hasReplies = await allOPCommentContainers[i].$$('div#expander ytd-comment-renderer.ytd-comment-replies-renderer');
       if (hasReplies.length > 0) {
         console.log('Replies found for', (i + 1));
 

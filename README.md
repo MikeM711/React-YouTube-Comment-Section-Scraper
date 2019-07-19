@@ -1,7 +1,3 @@
-# !Important: July 17 2019
-
-It seems as though YouTube has changed some of its HTML. At this time, "Scroll Batches" and "Expanding Comments" are currently being worked on. Please hang tight!
-
 # React Youtube Comment Section Scraper
 A full stack application that scrapes and filters YouTube comments of a particular video, using Node.js, Express.js, React.js, Puppeteer and Socket.IO.
 
