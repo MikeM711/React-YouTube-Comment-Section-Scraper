@@ -351,7 +351,7 @@ async function main(req, res, youtubeLink, io) {
       const likeHandlerStr = 'div#body div#main span#vote-count-left';
 
       // selector for creator badge
-      const isCreatorHandlerStr = 'div#body div#main div#header div#header-author span#author-comment-badge ytd-author-comment-badge-renderer.creator';
+      const isCreatorHandlerStr = 'span#author-comment-badge ytd-author-comment-badge-renderer';
 
       // Element handles for defined selectors, and their evaluations
 
@@ -394,7 +394,14 @@ async function main(req, res, youtubeLink, io) {
       const isCreatorHandler = await allOPCommentContainers[i].$(commentThreadStr + isCreatorHandlerStr);
 
       if (isCreatorHandler) {
-        var isCreator = true;
+        //if the isCreatorHandler has a "style" attribute, we know that the poster is the creator, and not just a "verified account"
+        const hasStyle = await allOPCommentContainers[i].$eval(isCreatorHandlerStr, badge => badge.getAttribute('style'))
+        // console.log(hasStyle)
+        if(hasStyle) {
+          var isCreator = true;
+        } else {
+          isCreator = false;
+        }
       } else {
         var isCreator = false;
       };
