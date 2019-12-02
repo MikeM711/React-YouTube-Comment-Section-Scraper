@@ -240,16 +240,20 @@ async function main(req, res, youtubeLink, io) {
     };
 
     await page.waitFor(2000); // breathing time
-    console.log('clicking "show more replies" buttons');
 
+    // yt-next-continuation.ytd-comment-replies-renderer
+    // Where we needd to fix
+    console.log('clicking "show more replies" buttons');
     // all currently visible "Show more replies" buttons
-    let showMoreRep = await page.$$('yt-formatted-string.yt-next-continuation');
+    // let showMoreRep = await page.$$('yt-formatted-string.yt-next-continuation');
+    const repliesHTML = 'div#continuation yt-next-continuation.ytd-comment-replies-renderer yt-formatted-string.yt-next-continuation'
+    let showMoreRep = await page.$$(repliesHTML);
     active = true;
 
     // A loop for "Show more replies" buttons
     while (active) {
       // Check to see if a single "Show more replies" button exists
-      let singleMoreRep = await page.$('yt-formatted-string.yt-next-continuation');
+      let singleMoreRep = await page.$(repliesHTML);
 
       // If a single "Show more replies" button exists, enter 'if' loop
       if (singleMoreRep) {
@@ -258,7 +262,7 @@ async function main(req, res, youtubeLink, io) {
         let preTotRep = await page.$$('ytd-comment-renderer.ytd-comment-replies-renderer');
 
         // All "Show More Replies" buttons before button click
-        let preTotMoreRep = await page.$$('yt-formatted-string.yt-next-continuation');
+        let preTotMoreRep = await page.$$(repliesHTML);
 
         // clicking the single "Show more replies" button
         await singleMoreRep.click();
@@ -276,7 +280,7 @@ async function main(req, res, youtubeLink, io) {
           let afterTotRep = await page.$$('ytd-comment-renderer.ytd-comment-replies-renderer');
 
           // All "Show More Replies" buttons after button click
-          let afterTotMoreRep = await page.$$('yt-formatted-string.yt-next-continuation');
+          let afterTotMoreRep = await page.$$(repliesHTML);
 
           // If more posts have been rendered than pre-button click, allow execution to move on
           if (preTotRep.length < afterTotRep.length) {
@@ -292,7 +296,7 @@ async function main(req, res, youtubeLink, io) {
         await page.waitFor(200); // Even though everything is rendered properly at this point, this gives some "breathing room", before next execution
 
         // Get the number of "Show more replies" button to display to the frontend
-        showMoreRep = await page.$$('yt-formatted-string.yt-next-continuation');
+        showMoreRep = await page.$$(repliesHTML);
 
         console.log(`${showMoreRep.length} "show more replies" buttons visible`);
         await page.waitFor(200); // more breathing time
