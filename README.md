@@ -11,6 +11,11 @@ If either a comment or a reply meets filter criteria, the particular post will h
 
 Check out the application here: https://youtube-comment-scraper.herokuapp.com/
 
+## Demo
+
+![demo](https://raw.githubusercontent.com/MikeM711/React-YouTube-Comment-Section-Scraper/master/demo/youtube-scraper-demo.gif)
+
+
 ## Backend
 
 Using Headless Chrome and Puppeteer, this application scrapes the following off of replies and comments:
@@ -68,9 +73,19 @@ If you wish to display dummy data: inside [Video Submission Component](https://g
     https://www.youtube.com/watch?v=lDLQA6lQSFg (disabled comments)
     https://www.youtube.com/watch?v=IaKLsGIR6SM (0 comments)
     https://www.youtube.com/watch?v=DozrRY2NENU (500 comments)
-    https://www.youtube.com/watch?v=PkZNo7MFNFg (1,100 comments & 1K+ comment)
-    https://www.youtube.com/watch?v=D3uvvA7dyoI (1,600 comments many 1K+ comments)
+    https://www.youtube.com/watch?v=DLX62G4lc44 (1,000 comments)
+    https://www.youtube.com/watch?v=Ka5sh6hBvSI (1,500 comments many 1K+ comments)
     https://www.youtube.com/watch?v=th5QV1mnWXo (too many comments )
+
+# Troubleshooting
+
+1. The application is hanging when I use it. What's going on?
+
+A: If the application hangs, it will typically hang during the clicking of the `"Show More Replies" buttons` portion during your first few runs. This happens because YouTube overlays prompts about things like "YouTube Red" or "Rate your YouTube Experience". These prompts that are frequently updated by YouTube will impede the clicking of the "show more replies" buttons in particular. I have tried to hunt for all of the prompts to close them all, but the process became too tedious. It is better that you refresh and try again if you are stuck. The frequency of prompts will be much less the more runs you do.
+
+2. I have refreshed multiple times, but the application has not completed a run.
+
+A: Chances are that YouTube has updated its HTML - YouTube tends to update its HTML every one or two months causing some operations to not work. Typically, only minor tweaks are needed to get the app back up and running
 
 # FAQ
 
