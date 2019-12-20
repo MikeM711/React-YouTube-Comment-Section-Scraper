@@ -283,7 +283,7 @@ async function main(req, res, youtubeLink, io) {
           let afterTotMoreRep = await page.$$(repliesHTML);
 
           /* Dev Note Dec 19 2019
-          Regarding the "await page.waitFor(10000);" lines below:
+          Regarding the "await page.waitFor(15000);" lines below:
 
           At this point in time, when a user clicks a "show more replies" button on YouTube, every post that is being rendered gets a "read more" option for a fraction of time during HTML rendering, and then disappears. This is a quirk with YouTube currently, as it has not been a problem before.
 
@@ -307,7 +307,7 @@ async function main(req, res, youtubeLink, io) {
 
           Solution:
           
-          As of now, I added a 10 second pause when execution understands that the "show more replies" click is fully rendered.
+          As of now, I added a 15 second pause when execution understands that the "show more replies" click is fully rendered.
           10 seconds is more than enough time for the "read more" glitch to render out, before we "grab" the element location of the next "show more replies" button.
           */
 
@@ -316,12 +316,16 @@ async function main(req, res, youtubeLink, io) {
             renderActive = false;
             // If problems, add a delay here
             console.log('hit more replies')
-            await page.waitFor(10000);
+            await res.write('hit more replies before pause');
+            await page.waitFor(15000);
+            await res.write('hit more replies after pause');
           } else if (preTotRep.length < afterTotRep.length) {
             // If more posts have been rendered than pre-button click, allow execution to move on
             renderActive = false;
             console.log('hit total replies')
-            await page.waitFor(10000);
+            await res.write('hit total before pause');
+            await page.waitFor(15000);
+            await res.write('hit total after pause');
           }
         };
 
