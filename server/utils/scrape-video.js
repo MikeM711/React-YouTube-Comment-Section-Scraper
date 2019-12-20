@@ -192,15 +192,15 @@ async function main(req, res, youtubeLink, io) {
 
         if (activePop && popup) {
           console.log('popup found');
-          
+
           let popupBtn = await page.$('paper-dialog.ytd-popup-container yt-formatted-string.style-text');
-          if (popupBtn){
+          if (popupBtn) {
             await page.waitFor(500); // breathe before clicking popup
             await popupBtn.click();
           }
 
           let surveyBtn = await page.$('ytd-single-option-survey-renderer.ytd-popup-container yt-icon-button.ytd-single-option-survey-renderer button.yt-icon-button')
-          if(surveyBtn){
+          if (surveyBtn) {
             await page.waitFor(500); // breathe before clicking popup
             await surveyBtn.click();
           }
@@ -211,7 +211,7 @@ async function main(req, res, youtubeLink, io) {
 
         // inside the expander context, there's a "paper-button" button in the below selector
         let showMore = await expander[i].$('paper-button.ytd-button-renderer');
-        
+
         // click that "View # replies" button
         await showMore.click();
 
@@ -282,17 +282,49 @@ async function main(req, res, youtubeLink, io) {
           // All "Show More Replies" buttons after button click
           let afterTotMoreRep = await page.$$(repliesHTML);
 
-          // If more posts have been rendered than pre-button click, allow execution to move on
-          if (preTotRep.length < afterTotRep.length) {
-            renderActive = false;
-          };
+          /* Dev Note Dec 19 2019
+          Regarding the "await page.waitFor(10000);" lines below:
+
+          At this point in time, when a user clicks a "show more replies" button on YouTube, every post that is being rendered gets a "read more" option for a fraction of time during HTML rendering, and then disappears. This is a quirk with YouTube currently, as it has not been a problem before.
+
+          What happens is:
+          1. "Show more replies" button gets clicked
+          2. YouTube page expands as more posts are being rendered in. Every new post happens to get a "read more" option.
+          3. The "read more" option glitch disappears within a fraction of the HTML rendering time, causing the whole YouTube page to condense slightly thereafter.
+    
+          Depending on how much HTML is rendered, this option can be seen for a fraction of a second or a couple of seconds.
+
+          Why is this a problem?
+
+          When we click the "show more replies" button, and then we "grab" the next "show more replies" button element right after that, we click the location of the element that we grab.
+          If we grab the location, but then the YouTube page condenses slightly because "read more" is rendered out, *we end up clicking below the location of the button* - This is the problem. 
+          We click the location of where the button was *expected to be* but isn't there - the button has moved up slightly because the "read more" glitch disappears.
+
+          What is affected:
+
+          For comment sections that are relatively small, this "read more" glitch doesn't interfere that much, as it renders out very quickly. 
+          For larger comment sections where there is a lot of HTML rendering, this "read more" option collapsing may interfere with the next "show more button" that is clicked.
+
+          Solution:
+          
+          As of now, I added a 10 second pause when execution understands that the "show more replies" click is fully rendered.
+          10 seconds is more than enough time for the "read more" glitch to render out, before we "grab" the element location of the next "show more replies" button.
+          */
 
           // If one less "Show More Reply" button is found, compared to pre-button click, allow execution to move on
           if (afterTotMoreRep.length == preTotMoreRep.length - 1) {
             renderActive = false;
             // If problems, add a delay here
-          };
+            console.log('hit more replies')
+            await page.waitFor(10000);
+          } else if (preTotRep.length < afterTotRep.length) {
+            // If more posts have been rendered than pre-button click, allow execution to move on
+            renderActive = false;
+            console.log('hit total replies')
+            await page.waitFor(10000);
+          }
         };
+
         await page.waitFor(200); // Even though everything is rendered properly at this point, this gives some "breathing room", before next execution
 
         // Get the number of "Show more replies" button to display to the frontend
@@ -401,7 +433,7 @@ async function main(req, res, youtubeLink, io) {
         //if the isCreatorHandler has a "style" attribute, we know that the poster is the creator, and not just a "verified account"
         const hasStyle = await allOPCommentContainers[i].$eval(isCreatorHandlerStr, badge => badge.getAttribute('style'))
         // console.log(hasStyle)
-        if(hasStyle) {
+        if (hasStyle) {
           var isCreator = true;
         } else {
           isCreator = false;
