@@ -8,6 +8,16 @@ async function main(req, res, youtubeLink, io) {
       args: ['--no-sandbox', '--disable-setuid-sandbox']
       // slowMo: 250 // slow down by 250ms
     });
+
+    // Get comment section height - used for debugging
+    async function getCommmentSectionHeight() {
+      const commentSectionElem = await page.
+        $('ytd-item-section-renderer#sections');
+      const boundingBox = await commentSectionElem.boundingBox();
+      const commentSectionHeight = boundingBox.height;
+      return commentSectionHeight
+    }
+
     // Create a new page in the browser, store it in a page object
     const page = await browser.newPage();
     await page.setViewport({ width: 1280, height: 800 });
@@ -142,6 +152,10 @@ async function main(req, res, youtubeLink, io) {
       let preCommentHanlder = await page.$$(commentsStr);
       await scrollFunc(1000);
 
+      // debugging: outputs the comment section height
+      // var commentSectionHeight = await getCommmentSectionHeight()
+      // console.log("height: " + commentSectionHeight); // common for first 2 batches to have same number
+
       // After each scrolling iteration, check to see if the below selector exists in the "buffer" handle
       // If it does exist, more HTML needs to be rendered
       let buffer = await page.$('yt-next-continuation.ytd-item-section-renderer');
@@ -265,69 +279,116 @@ async function main(req, res, youtubeLink, io) {
         let preTotMoreRep = await page.$$(repliesHTML);
 
         // clicking the single "Show more replies" button
+
+        // debugging: outputs the comment section height + total replies
+        // commentSectionHeight = await getCommmentSectionHeight()
+        // console.log("height before click: " + commentSectionHeight);
+        // var totalShowMoreReplies = await page.$$(repliesHTML);
+        // console.log('total show more replies before click', totalShowMoreReplies.length)
+
         await singleMoreRep.click();
-        renderActive = true;
 
         /* Now that "Show More Replies" button has been clicked, we need execution to wait until replies have been fully rendered
           Replies are fully rendered when:
-            1. There are more replies on the YT page than before click
+            1. There are more replies on the YT page than before click (now deprecated)
             2. There is one less "Show More Replies" button on the YT page
               - The above is needed because sometimes a clicked "Show More Replies" button does not render out ANY comments
         */
 
-        while (renderActive) {
-          // All replies after button click
+        // debugging: outputs the comment section height + total replies
+        // commentSectionHeight = await getCommmentSectionHeight()
+        // console.log("height after click: " + commentSectionHeight);
+        // totalShowMoreReplies = await page.$$(repliesHTML);
+        // console.log('total show more replies after click', totalShowMoreReplies.length)
+
+
+        // To handle the case: multiple "show more replies" are in one thread
+
+        // Problem: if we click a "show more replies" button, and this button count does not update, 
+        // it is safe to assume that the particular comment thread is very long and has another "show more replies" button to click
+        // A new soln was developed for Dec 2018, as the older one is now deprecated
+        // Old solution: The number of posts were compared before and after
+        // Old solution does not work because, even if the post number is updated, the "show more replies" button HTML can *still* remain inside the HTML for a certain amount of time thereafter. 
+        // We must wait for this particular button HTML to be removed.
+
+        // We will wait 45s to click the "show more replies" button if clicking one button does not decrease the total button count by -1 on a page
+        // Meaning, we plan to click on a "show more replies" button inside the same thread
+        var d = new Date();
+        var waitingTime = 45 * 1000 // 45 seconds
+        var timeWhenShowMoreRepClicked = d.getTime();
+        var waitingTimeOver = d.setTime(timeWhenShowMoreRepClicked + waitingTime);
+
+        // We need to keep the connection alive if we plan on waiting the full 45 seconds for this particular case
+        // Below are the times when we need to send a message over the connection line
+        var active_15 = true
+        var active_30 = true
+
+        do {
+
+          // Get the time during each iteration to compare against waitingTimeOver
+          var currDate = new Date();
+          var getCurrTime = currDate.getTime()
+
+          // All replies after button click - useful for debugging
           let afterTotRep = await page.$$('ytd-comment-renderer.ytd-comment-replies-renderer');
 
           // All "Show More Replies" buttons after button click
           let afterTotMoreRep = await page.$$(repliesHTML);
 
-          /* Dev Note Dec 19 2019
-          Regarding the "await page.waitFor(15000);" lines below:
-
-          At this point in time, when a user clicks a "show more replies" button on YouTube, every post that is being rendered gets a "read more" option for a fraction of time during HTML rendering, and then disappears. This is a quirk with YouTube currently, as it has not been a problem before.
-
-          What happens is:
-          1. "Show more replies" button gets clicked
-          2. YouTube page expands as more posts are being rendered in. Every new post happens to get a "read more" option.
-          3. The "read more" option glitch disappears within a fraction of the HTML rendering time, causing the whole YouTube page to condense slightly thereafter.
-    
-          Depending on how much HTML is rendered, this option can be seen for a fraction of a second or a couple of seconds.
-
-          Why is this a problem?
-
-          When we click the "show more replies" button, and then we "grab" the next "show more replies" button element right after that, we click the location of the element that we grab.
-          If we grab the location, but then the YouTube page condenses slightly because "read more" is rendered out, *we end up clicking below the location of the button* - This is the problem. 
-          We click the location of where the button was *expected to be* but isn't there - the button has moved up slightly because the "read more" glitch disappears.
-
-          What is affected:
-
-          For comment sections that are relatively small, this "read more" glitch doesn't interfere that much, as it renders out very quickly. 
-          For larger comment sections where there is a lot of HTML rendering, this "read more" option collapsing may interfere with the next "show more button" that is clicked.
-
-          Solution:
-          
-          As of now, I added a 15 second pause when execution understands that the "show more replies" click is fully rendered.
-          10 seconds is more than enough time for the "read more" glitch to render out, before we "grab" the element location of the next "show more replies" button.
-          */
-
+          // Handles the case of allowing the execution to move on if one less "show more replies" button is clicked and fully rendered out
           // If one less "Show More Reply" button is found, compared to pre-button click, allow execution to move on
           if (afterTotMoreRep.length == preTotMoreRep.length - 1) {
-            renderActive = false;
-            // If problems, add a delay here
-            console.log('hit more replies')
-            await res.write('hit more replies before pause');
-            await page.waitFor(15000);
-            await res.write('hit more replies after pause');
-          } else if (preTotRep.length < afterTotRep.length) {
-            // If more posts have been rendered than pre-button click, allow execution to move on
-            renderActive = false;
-            console.log('hit total replies')
-            await res.write('hit total before pause');
-            await page.waitFor(15000);
-            await res.write('hit total after pause');
+            console.log('one less "show more replies" button inside the page')
+            break
           }
-        };
+
+          // Handling the case of multiple "show more replies" in one comment thread
+
+          /* 
+          OLD SOLUTION DISCUSSION
+
+          Old Soln: If more posts have been rendered than pre-button click, allow execution to move on
+
+          This old method does not work anymore, YouTube does not fully remove the "show more replies" button when more posts are loaded in.
+          You must wait a certain amount of time before the button is fully removed from the HTML
+
+          // deprecated as of Dec 2019 (old soln)
+          // else if (preTotRep.length < afterTotRep.length) {
+          //   // If more posts have been rendered than pre-button click, allow execution to move on
+          //   renderActive = false;
+          //   console.log('hit total replies')
+          //   // await res.write('hit total before pause');
+          //   // await page.waitFor(15000);
+          //   // await res.write('hit total after pause');
+          // }
+
+          */
+
+          // NEW SOLUTION: if 45s has passed, allow the execution to continue
+
+          // For New Soln: we don't want to wait 45s without keeping the connection alive
+          var floorCurr = Math.floor(getCurrTime / 1000)
+          var floorInit = Math.floor(timeWhenShowMoreRepClicked / 1000)
+          
+          if (active_15 && (floorCurr - floorInit) >= 15) {
+            console.log('15 seconds have passed')
+            await res.write('15 seconds have passed')
+            active_15 = false
+          }
+
+          if (active_30 && (floorCurr - floorInit) >= 30) {
+            console.log('30 seconds have passed')
+            await res.write('30 seconds have passed')
+            active_30 = false
+          }
+
+        } while (getCurrTime <= waitingTimeOver)
+
+        // debugging: outputs the comment section height + total replies
+        // commentSectionHeight = await getCommmentSectionHeight()
+        // console.log("height after leaving loop: " + commentSectionHeight);
+        // totalShowMoreReplies = await page.$$(repliesHTML);
+        // console.log('total show more replies after leaving loop', totalShowMoreReplies.length)
 
         await page.waitFor(200); // Even though everything is rendered properly at this point, this gives some "breathing room", before next execution
 

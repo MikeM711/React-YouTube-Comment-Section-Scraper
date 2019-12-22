@@ -48,7 +48,7 @@ class Progress extends Component {
         </div>
         <div className="progress-issues">
           <div className="card-panel progress-issues-card #e8eaf6 indigo lighten-5 col s4" >
-            <p>If your progress is hanging (no progress made within 60 seconds), or an incorrect error shows up: </p>
+            <p>If your progress is hanging (no progress made within 120 seconds), or an incorrect error shows up: </p>
             <p>1. Refresh and try again</p>
             <span>2. Send your progress log and your link to my </span>
             <a href="https://github.com/MikeM711/youtube-comment-section-scraper"
