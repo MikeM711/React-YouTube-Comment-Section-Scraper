@@ -13,9 +13,19 @@ Check out the application here: https://youtube-comment-scraper.herokuapp.com/
 
 ## Demo: Fetching The Comment Section
 
+What is it like to run this application?
+
+The gif below demonstrates the "Example URL" provided within the application.
+
 ![demo-fetch](https://raw.githubusercontent.com/MikeM711/React-YouTube-Comment-Section-Scraper/master/demo/youtube-scraper-demo.gif)
 
 ## Demo: The Filter
+
+Have you ever wanted to view only top comments, but you find that some are buried within the comment section?
+
+Have you ever wanted to view all of the comments that the video creator has made on their video? Maybe they have replied some gems to someone's comment.
+
+The filter inside this application will help you with that!
 
 ![demo-filter](https://raw.githubusercontent.com/MikeM711/React-YouTube-Comment-Section-Scraper/master/demo/widget-calculator-filter.gif)
 
@@ -78,8 +88,7 @@ If you wish to display dummy data: inside [Video Submission Component](https://g
     https://www.youtube.com/watch?v=DozrRY2NENU (500 comments)
     https://www.youtube.com/watch?v=OGxgnH8y2NM (800 comments + long comment chain)
     https://www.youtube.com/watch?v=RoGHVI-w9bE (800 comments + long comment chain + many 1k+ comments)
-    https://www.youtube.com/watch?v=ybrY9JWVBv4 (1,600 comments + long comment chains)
-    https://www.youtube.com/watch?v=th5QV1mnWXo (too many comments )
+    https://www.youtube.com/watch?v=ybrY9JWVBv4 (too many comments )
 
 # Troubleshooting
 
@@ -91,7 +100,7 @@ However, if the application hangs longer than that, the most probable cause is b
 
 The frequency of prompts will be much less the more runs you do.
 
-2. I have refreshed multiple times, but the application has not completed a run.
+2. I have ran, refreshed and restarted a few times, but the application has not completed a run
 
 Chances are that YouTube has updated its HTML - YouTube tends to update its HTML every one or two months causing some operations to not work. Typically, only minor tweaks are needed to get the app back up and running.
 
@@ -113,7 +122,7 @@ Q: Why does the number of "Scroll Batches" vary for the same video?
 
 A: How YouTube renders its comment section, and the time it takes to render, varies. Thus, making the number of "Scroll Batches" vary.  That said, this program should complete with the same number of comments and replies every time.
 
-Q: Why are comments capped at 2,000?
+Q: Why are comments capped at 1,000?
 
 A: The application can scrape an infinite number of comments.  But there are a few issues: 
 

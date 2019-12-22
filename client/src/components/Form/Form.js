@@ -47,7 +47,7 @@ class Form extends Component {
               onChange={this.handleUrlChange}
               value={this.state.url}
               disabled={progressActive}
-              placeholder="Enter YouTube video URL here (2,000 comments maximum)"
+              placeholder="Enter YouTube video URL here (1,000 comments maximum)"
             />
             <button
               className="waves-effect waves-light btn #42a5f5 blue lighten-1 submit-form-button"

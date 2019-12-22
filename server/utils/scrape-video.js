@@ -129,9 +129,9 @@ async function main(req, res, youtubeLink, io) {
     commentNumber = Number(commentNumber.replace(" Comments", "").replace(",", ""));
     console.log('YouTube sees', commentNumber, 'posts');
 
-    // Do not allow program to continue, if YouTube finds 2000+ comments
-    if (commentNumber >= 2000) {
-      await io.emit('ErrorMsg', `Error: The video "${titleName}" has too many comments (YouTube detects ${commentNumber} Comments). Choose another YouTube video with less than 2,000 comments.`);
+    // Do not allow program to continue, if YouTube finds 1000+ comments
+    if (commentNumber >= 1000) {
+      await io.emit('ErrorMsg', `Error: The video "${titleName}" has too many comments (YouTube detects ${commentNumber} Comments). Choose another YouTube video with less than 1,000 comments.`);
       browser.close();
       res.end();
     }
@@ -369,7 +369,7 @@ async function main(req, res, youtubeLink, io) {
           // For New Soln: we don't want to wait 45s without keeping the connection alive
           var floorCurr = Math.floor(getCurrTime / 1000)
           var floorInit = Math.floor(timeWhenShowMoreRepClicked / 1000)
-          
+
           if (active_15 && (floorCurr - floorInit) >= 15) {
             console.log('15 seconds have passed')
             await res.write('15 seconds have passed')
