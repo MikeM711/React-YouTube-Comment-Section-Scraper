@@ -1,7 +1,7 @@
 # React Youtube Comment Section Scraper
 A full stack application that scrapes and filters YouTube comments of a particular video, using Node.js, Express.js, React.js, Puppeteer and Socket.IO.
 
-This application scrapes YouTube comments with Chrome Headless (using Google's [Puppeteer](https://github.com/GoogleChrome/puppeteer)), instead of using the YouTube API.  It also relays real-time progress messages to the client using Socket.IO, for an appropriate user-experience. Data and progress is displayed to the client, using React.js.
+This application scrapes YouTube comments with Chromium Headless (using Google's [Puppeteer](https://github.com/GoogleChrome/puppeteer)), instead of using the YouTube API.  It also relays real-time progress messages to the client using Socket.IO, for an appropriate user-experience. Data and progress is displayed to the client, using React.js.
 
 Once the client has received the comment section data, the user is able to filter comments and replies by: video creator, number of likes, word phrases, username, and date. Filtering is displayed instantly. Using multiple filters will be chained together for a more specific result.
 
@@ -31,7 +31,7 @@ The filter inside this application will help you with that!
 
 ## Backend
 
-Using Headless Chrome and Puppeteer, this application scrapes the following off of replies and comments:
+Using Headless Chromium and Puppeteer, this application scrapes the following off of replies and comments:
 - Comment/Reply Text
 - Avatar Image
 - Name
@@ -128,4 +128,4 @@ A: The application can scrape an infinite number of comments.  But there are a f
 
 1) As more HTML is rendered, the slower the YouTube page becomes. The scraping process may take longer than a user would be happy with.
 
-2) Heroku can become finicky when dealing with Puppeteer/Chrome processing large numbers of comments on the page.
+2) Heroku can become finicky when dealing with Puppeteer/Chromium processing large numbers of comments on the page.
